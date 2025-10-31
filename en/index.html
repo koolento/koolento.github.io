@@ -1,0 +1,571 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Koolento FPV</title>
+    <meta name="description" content="Koolento FPV provides stunning FPV drone footage and aerial photography for events, commercials, and real estate.">
+    <meta name="keywords" content="FPV, drone, aerial photography, video production, commercial video, event filming, aerial shots">
+    <meta name="author" content="Koolento FPV">
+    <meta name="robots" content="index, follow">
+    <!-- Open Graph -->
+    <meta property="og:title" content="Koolento FPV – FPV Drone & Aerial Photography">
+    <meta property="og:description" content="Koolento FPV creates impressive FPV videos and aerial images for various purposes.">
+    <meta property="og:image" content="../heroLogo.png">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://koolento.fi">
+    <link rel="icon" type="image/png" sizes="32x32" href="../favicon.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../favicon.png">
+    <link rel="stylesheet" href="../output.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript>
+      <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    </noscript>
+    <link rel="stylesheet" href="../dist/output.css?v=1.0">
+    <!--<script src="../scrollEffects.js" defer></script>-->
+    <style>
+
+          html {
+              scroll-behavior: smooth;
+          }
+
+         .content {
+              padding: 16px;
+              padding-top: 60px;
+              padding-left: 35px;
+              text-align: left;
+              font-family: sans-serif;
+              font-size: 20px;
+              color: rgb(255, 255, 255);
+              background: transparent;
+          }
+
+          .sticky {
+              position: fixed;
+              top: 0;
+              width: 100%;
+          }
+
+          .sticky + .content {
+              padding-top: 102px;
+          }
+
+              .exhibition {
+              padding-left: 0px;
+              padding-top: 0px;
+              text-align: center;
+              font-family: sans-serif;
+              font-size: 15px;
+              color: rgb(255, 255, 255);
+              background:rgb(0, 0, 0);
+          }
+
+          #mainNav {
+              font-family: "Pacifico", cursive;
+          }
+
+          #mainNav {
+        transition: all 0.3s ease;
+      }
+
+        h1, h2 {
+        transition: all 0.3s ease-in-out;
+      }
+
+      /* Hover-efekti */
+      h1:hover, h2:hover {
+        transform: scale(1.1);
+      }
+
+       /* Logon ambilight */
+        #heroLogo {
+          filter: drop-shadow(0 0 15px rgba(0, 150, 255, 0.6))
+                  drop-shadow(0 0 40px rgba(0, 150, 255, 0.3));
+          transition: all 0.5s ease;
+        }
+
+        /* Hoverissa korostuu */
+        #heroLogo:hover {
+          filter: drop-shadow(0 0 25px rgba(0, 180, 255, 0.8))
+                  drop-shadow(0 0 60px rgba(0, 180, 255, 0.6));
+          transform: scale(1.05);
+        }
+      
+    </style>
+  </head>
+
+  <body class="bg-black font-sans text-white">
+    <!-- Fixed Video Background -->
+    <section id="header" class="top-0 flex h-screen items-center justify-center">
+      <h2 class="sr-only">Background video</h2>
+      <div class="fixed inset-0 -z-10 h-full w-full">
+        <video autoplay muted loop playsinline class="h-full w-full object-cover opacity-70" poster="index-bg2.jpg">
+          <source src="../index-bg4.mp4" type="video/mp4">
+        </video>
+      </div>
+
+      <!-- Navigaatiopalkki -->
+      <nav id="mainNav" class="fixed top-0 left-0 z-50 hidden w-full">
+        <div class="flex items-center justify-between px-6 py-4">
+          <!-- Hampurilaiset -->
+          <div class="flex w-full items-center justify-between">
+            <!-- Desktop hampurilainen (vasen) -->
+            <button id="menuBtnDesktop" title="Open menu" aria-label="Open menu" class="hidden text-2xl text-white md:block">☰</button>
+
+            <!-- Tyhjä tila keskelle -->
+            <div class="flex-grow"></div>
+
+            <!-- Mobile hampurilainen (oikea) -->
+            <button id="menuBtnMobile" title="Open menu" aria-label="Open menu" class="block text-2xl text-white md:hidden">☰</button>
+          </div>
+        </div>
+
+        <!-- Navigaatiolista -->
+        <!-- Desktop menu -->
+        <div id="navMenuDesktop" class="absolute top-full left-6 mt-2 hidden rounded-xl bg-gray-900/95 px-6 py-4 shadow-lg">
+          <ul class="flex flex-col gap-3 text-lg text-white">
+            <li><a href="index.html" class="hover:text-blue-400">Home</a></li>
+            <li><a href="portfolio_2.html" class="hover:text-blue-400">Portfolio</a></li>
+            <li><a href="palvelut1.html" class="hover:text-blue-400">Services</a></li>
+            <li><a href="yhteystiedot.html" class="hover:text-blue-400">Contact</a></li>
+          </ul>
+
+          <hr class="py-2 my-4 border-gray-700">
+
+  <div class="flex justify-center gap-6 text-white text-sm font-sans font-medium">
+    <a href="/index.html" class="hover:text-blue-400 font-family:Arial">FI</a>
+    <a href="/en/index.html" class="hover:text-blue-400">EN</a>
+  </div>
+
+        </div>
+
+        </div>
+
+        <!-- Mobile menu -->
+        <div id="navMenuMobile" class="absolute top-full right-6 mt-2 hidden rounded-xl bg-gray-900/95 px-6 py-4 shadow-lg">
+          <ul class="flex flex-col gap-3 text-lg text-white">
+            <li><a href="index.html" class="hover:text-blue-400">Home</a></li>
+            <li><a href="portfolio_2.html" class="hover:text-blue-400">Portfolio</a></li>
+            <li><a href="palvelut1.html" class="hover:text-blue-400">Services</a></li>
+            <li><a href="yhteystiedot.html" class="hover:text-blue-400">Contact</a></li>
+          </ul>
+
+          <hr class="py-2 my-4 border-gray-700">
+
+  <div class="flex justify-center gap-6 text-white text-sm font-sans font-medium">
+    <a href="/index.html" class="hover:text-blue-400 font-family:Arial">FI</a>
+    <a href="/en/index.html" class="hover:text-blue-400">EN</a>
+  </div>
+
+        </div>
+      </nav>
+
+      <!-- Hero Logo -->
+<div id="logoWrapper" class="fixed inset-x-0 top-[15vh] flex justify-center items-center z-20 pointer-events-none">
+  <a href="index.html" class="flex items-center pointer-events-auto">
+    <img id="heroLogo" src="../heroLogo.png" alt="Koolento FPV logo" class="w-60 md:w-[40vw] transition-all duration-500" loading="eager" fetchpriority="high">
+    
+    <!-- Pieni FPV-ikoni, jota en saa millään toimimaan keskitetyn heroLogon kanssa
+    <svg id="miniLogo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 40"
+      class="w-10 h-10 opacity-0 translate-x-5 transition-all duration-200 rotate-12">
+      <text x="0" y="30" font-family="Arial, sans-serif" font-size="30" font-weight="bold" fill="white">
+        FPV
+      </text>
+    </svg>-->
+    
+  </a>
+    <p id="heroText" class="absolute top-full mt-2 text-lg md:text-2xl text-gray-200 transition-opacity duration-500">
+    FPV Drone & Aerial Photography
+  </p>
+</div>
+      
+    </section>
+
+    <!-- Slogan + Button -->
+
+    <div id="mainContent" class="items-center bg-black/80 from-black via-gray-900 to-black text-center backdrop-blur-sm">
+      <section class="z-10 items-center text-center">
+        <h2 class="sr-only">Slogan</h2>
+        <div class="max-w-3xl px-6"></div>
+        <div class="px-6 py-10">
+          <p class="mb-6 text-xl text-gray-100 italic md:text-2xl">See the world from above.</p>
+          <a href="#services" class="rounded-2xl bg-blue-500 px-6 py-3 font-semibold text-black transition hover:bg-blue-400">Explore Services</a>
+        </div>
+      </section>
+
+      <!-- Portfolio Section -->
+      <section id="portfolio" class="relative z-10 flex flex-col items-center px-6 py-20 md:px-20">
+        <!-- Portfolio otsikko -->
+        <div class="relative flex justify-center">
+          <!-- Glow-teksti -->
+          <h2 id="portfolioGlow" class="pointer-events-none absolute mt-12 mb-20 text-center text-5xl font-bold text-blue-500 opacity-90 blur-xl md:text-6xl" style="font-family: 'Pacifico', cursive;">Portfolio</h2>
+
+          <!-- Varsinainen otsikko -->
+          <h2 id="portfolioMain" class="relative z-10 mt-12 mb-20 text-center text-5xl font-bold text-white md:text-6xl" style="font-family: 'Pacifico', cursive;"><a href="portfolio_2.html">Portfolio</a></h2>
+        </div>
+
+        <p class="mx-auto mb-12 max-w-2xl text-center text-gray-400">Explore past projects – see how FPV flights and aerial shots bring stories to life.</p>
+
+        <div class="grid gap-8 md:grid-cols-2">
+          <div class="aspect-[9/16] max-h-[80vh] items-center justify-center overflow-hidden rounded-2xl bg-black shadow-lg">
+            <iframe class="h-full w-full border-0" src="https://www.youtube-nocookie.com/embed/eOE5FhR5G4Y?si=XVGKqwM2TK4R-VVO" loading="lazy" title="Drone video Norjan vuonoilta ja Suomen maisemista. FPV ilmakuvausta" allowfullscreen></iframe>
+          </div>
+          <div class="aspect-[9/16] max-h-[80vh] items-center justify-center overflow-hidden rounded-2xl bg-black shadow-lg">
+            <iframe class="h-full w-full border-0" src="https://www.youtube-nocookie.com/embed/zOBKZp62QXU?si=hRHlDc4ewXaCJCK4" loading="lazy" title="Drone video Suomen tunturimaisemista. FPV ilmakuvausta" allowfullscreen></iframe>
+          </div>
+        </div>
+      </section>
+
+      <!-- Services Section -->
+      <section id="services" class="relative z-10 px-6 py-20 md:px-20">
+        <!-- Portfolio otsikko -->
+        <div class="relative flex justify-center">
+          <!-- Glow-teksti -->
+          <h2 id="servicesGlow" class="pointer-events-none absolute mt-12 mb-20 text-center text-5xl font-bold text-blue-500 opacity-90 blur-xl md:text-6xl" style="font-family: 'Pacifico', cursive;">Services</h2>
+
+          <!-- Varsinainen otsikko -->
+          <h2 id="servicesMain" class="relative z-10 mt-12 mb-20 text-center text-5xl font-bold text-white md:text-6xl" style="font-family: 'Pacifico', cursive;"><a href="palvelut1.html">Services</a></h2>
+        </div>
+
+        <p class="mx-auto mb-12 max-w-2xl text-center text-gray-400">I provide dynamic FPV drone filming alongside traditional aerial photography, creating content that stands out and leaves a lasting impression.</p>
+
+        <div class="grid gap-10 md:grid-cols-3">
+          <div class="rounded-2xl bg-gray-900 p-6 shadow-lg hover:bg-blue-950">
+            <a href="palvelut1.html">
+              <h3 class="mb-3 text-xl font-semibold break-words hyphens-auto">Aerial filming</h3>
+              <p class="text-gray-400">Stunning aerial shots and dynamic FPV flights that capture landscapes from new perspectives.</p>
+            </a>
+          </div>
+
+          <div class="rounded-2xl bg-gray-900 p-6 shadow-lg hover:bg-blue-950">
+            <a href="palvelut1.html">
+              <h3 class="mb-3 text-xl font-semibold">Real Estate & Commercial Videos</h3>
+              <p class="text-gray-400">Elegant and impactful video presentations for properties and marketing – creating a professional first impression.</p>
+            </a>
+          </div>
+
+          <div class="rounded-2xl bg-gray-900 p-6 shadow-lg hover:bg-blue-950">
+            <a href="palvelut1.html">
+              <h3 class="mb-3 text-xl font-semibold">Showreels & Social Media</h3>
+              <p class="text-gray-400">Fast-paced and visually engaging clips for social media that capture attention and boost visibility.</p>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contact Section -->
+      <section id="contact" class="relative z-10 bg-black px-6 py-20 text-center md:px-20">
+        <!-- Portfolio otsikko -->
+        <div class="relative flex justify-center">
+          <!-- Glow-teksti -->
+          <h2 id="contactGlow" class="pointer-events-none absolute mt-12 mb-20 text-center text-5xl font-bold text-blue-500 opacity-90 blur-xl md:text-6xl" style="font-family: 'Pacifico', cursive;">Contact</h2>
+
+          <!-- Varsinainen otsikko -->
+          <h2 id="contactMain" class="relative z-10 mt-12 mb-20 text-center text-5xl font-bold text-white md:text-6xl" style="font-family: 'Pacifico', cursive;"><a href="yhteystiedot.html">Contact</a></h2>
+        </div>
+
+        <p class="mx-auto mb-8 max-w-2xl text-gray-400">Want to elevate your event, product, or idea? Tell me your vision – let's create an impressive FPV video together.</p>
+
+        <div class="mb-12 text-lg">
+          <p><br>Konsta Koskinen<br></p>
+          <p>koolentofpv@gmail.com<br></p>
+          <p>+358 40 413 3537<br></p>
+        </div>
+
+        <!-- Toggle button -->
+        <button id="toggleContactForm" title="Ota yhteyttä" class="inline-block rounded-2xl bg-blue-500 px-6 py-3 font-semibold text-black transition hover:bg-blue-400" aria-expanded="false" aria-controls="contactForm">Send email</button>
+
+        <!-- Contact form (hidden by default) -->
+        <!-- tsekkaa input type buttoneille -->
+        <div id="contactForm" class="mx-auto mt-8 hidden max-w-2xl px-4" aria-hidden="true">
+          <form action="https://formspree.io/f/movkqzda" method="POST" class="rounded-2xl bg-gray-900/70 p-6 shadow-lg backdrop-blur-sm">
+            <div class="grid gap-4">
+              <label class="text-left">
+                <span class="text-sm text-gray-300">Name<span class="text-red-400">*</span></span>
+                <input name="name" type="text" required class="mt-1 w-full rounded-lg border border-gray-700 bg-black p-3 text-white">
+              </label>
+
+              <label class="text-left">
+                <span class="text-sm text-gray-300">Email<span class="text-red-400">*</span></span>
+                <input name="email" type="email" required class="mt-1 w-full rounded-lg border border-gray-700 bg-black p-3 text-white">
+              </label>
+
+              <label class="text-left">
+                <span class="text-sm text-gray-300">Topic</span>
+                <input name="subject" type="text" class="mt-1 w-full rounded-lg border border-gray-700 bg-black p-3 text-white">
+              </label>
+
+              <label class="text-left">
+                <span class="text-sm text-gray-300">Message<span class="text-red-400">*</span></span>
+                <textarea name="message" rows="5" required class="mt-1 w-full rounded-lg border border-gray-700 bg-black p-3 text-white"></textarea>
+              </label>
+
+              <div class="flex items-center gap-4">
+                <button type="submit" class="rounded-2xl bg-blue-500 px-5 py-2 font-semibold text-black transition hover:bg-blue-400">Send</button>
+                <button type="button" id="cancelForm" class="text-gray-300 underline hover:text-white">Cancel</button>
+              </div>
+            </div>
+          </form>
+
+          <p id="formSuccess" class="mt-3 hidden text-green-400">Thank you for your message 🙌 I will get back to you soon!</p>
+        </div>
+
+        <!-- Social links -->
+        <div class="mt-10 flex justify-center gap-6">
+          <!-- Instagram -->
+          <a href="#" class="flex items-center gap-2 text-gray-400 transition-colors hover:text-pink-500" target="_blank" rel="noopener noreferrer">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 448 512" class="h-5 w-5">
+              <path d="M224.1 141c-63.6 0-115 51.4-115 115s51.4 115 115 115 115-51.4 115-115-51.4-115-115-115zm0 190c-41.4 0-75-33.6-75-75s33.6-75 75-75 75 33.6 75 75-33.6 75-75 75zm146.4-194.1c0 14.9-12 26.9-26.9 26.9s-26.9-12-26.9-26.9 12-26.9 26.9-26.9 26.9 12 26.9 26.9zm76.1 27.2c-.5-54.9-4.9-103.7-55.8-154.5-50.9-50.9-99.7-55.3-154.5-55.8-61.2-.5-243.9-.5-305.1 0-54.9.5-103.7 4.9-154.5 55.8-50.9 50.9-55.3 99.7-55.8 154.5-.5 61.2-.5 243.9 0 305.1.5 54.9 4.9 103.7 55.8 154.5 50.9 50.9 99.7 55.3 154.5 55.8 61.2.5 243.9.5 305.1 0 54.9-.5 103.7-4.9 154.5-55.8 50.9-50.9 55.3-99.7 55.8-154.5.5-61.2.5-243.9 0-305.1zM398.8 388c-7.8 19.6-23.1 35-42.7 42.7-29.6 11.7-99.9 9-132.1 9s-102.5 2.6-132.1-9c-19.6-7.8-35-23.1-42.7-42.7-11.7-29.6-9-99.9-9-132.1s-2.6-102.5 9-132.1c7.8-19.6 23.1-35 42.7-42.7 29.6-11.7 99.9-9 132.1-9s102.5-2.6 132.1 9c19.6 7.8 35 23.1 42.7 42.7 11.7 29.6 9 99.9 9 132.1s2.6 102.5-9 132.1z" />
+            </svg>
+            Instagram
+          </a>
+
+          <!-- YouTube -->
+          <a href="#" class="flex items-center gap-2 text-gray-400 transition-colors hover:text-red-600" target="_blank" rel="noopener noreferrer">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 576 512" class="h-5 w-5">
+              <path d="M549.655 124.083c-6.281-23.637-24.88-42.205-48.514-48.488C458.837 64 288 64 288 64S117.163 64 74.859 75.595c-23.634 6.283-42.233 24.851-48.514 48.488C15.988 166.438 16 256 16 256s-.012 89.562 10.345 131.917c6.281 23.637 24.88 42.205 48.514 48.488C117.163 448 288 448 288 448s170.837 0 213.141-11.595c23.634-6.283 42.233-24.851 48.514-48.488C560.012 345.562 560 256 560 256s.012-89.562-10.345-131.917zM232 336V176l142 80-142 80z" />
+            </svg>
+            YouTube
+          </a>
+
+          <!-- TikTok -->
+          <a href="https://www.tiktok.com/@konkkadonk" class="flex items-center gap-2 text-gray-400 transition-colors hover:text-gray-800" target="_blank" rel="noopener noreferrer">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 448 512" class="h-5 w-5">
+              <path d="M448 209.9c-16.8 7.6-35.2 12.9-54.3 15.1v103.9c0 62.3-50.7 112.8-113 112.8-62.3 0-113-50.6-113-112.8 0-61.7 50.2-112.1 111.7-112.8v48.5c-36.7.3-66.7 30.1-66.7 66.7 0 36.8 30 66.8 66.8 66.8 36.8 0 66.7-30 66.7-66.7V0h48v209.9z" />
+            </svg>
+            TikTok
+          </a>
+        </div>
+      </section>
+
+      <!-- Feedback Widget -->
+      <div id="feedbackWidget" class="fixed right-6 bottom-6 z-50 flex items-center gap-2 rounded-2xl bg-gray-900/90 p-4 shadow-lg backdrop-blur-sm">
+        <span class="text-sm text-gray-300">How was the website?</span>
+
+        <!-- Lomake Formspreea varten -->
+        <form id="feedbackForm" action="https://formspree.io/f/xpwyjrpr" method="POST">
+          <!-- Piilotettu input napin arvon lähettämiseen -->
+          <input type="hidden" name="feedback" id="feedbackInput" value="">
+
+          <!-- Emoji-napit -->
+          <button type="button" class="emoji-btn text-2xl" data-value="🚀">🚀</button>
+          <button type="button" class="emoji-btn text-2xl" data-value="🥳">🥳</button>
+          <button type="button" class="emoji-btn text-2xl" data-value="🤙🏼">🤙🏼</button>
+          <button type="button" class="emoji-btn text-2xl" data-value="😐">😐</button>
+          <button type="button" class="emoji-btn text-2xl" data-value="👎🏼">👎🏼</button>
+        </form>
+
+        <!-- Sulje-widget -->
+        <button id="closeFeedback" class="ml-2 text-gray-500 hover:text-gray-300">&times;</button>
+      </div>
+
+      <!-- Script: toggle + form handling -->
+      <script>
+        
+
+        (function () {
+            const toggleBtn = document.getElementById('toggleContactForm');
+            const formWrap = document.getElementById('contactForm');
+            const cancelBtn = document.getElementById('cancelForm');
+            const form = formWrap.querySelector("form");
+
+            // Toggle näkyvyys
+            toggleBtn.addEventListener('click', () => {
+              const isHidden = formWrap.classList.contains('hidden');
+              formWrap.classList.toggle('hidden', !isHidden);
+              formWrap.setAttribute('aria-hidden', isHidden ? 'false' : 'true');
+              toggleBtn.setAttribute('aria-expanded', isHidden ? 'true' : 'false');
+
+              if (isHidden) {
+                setTimeout(() => formWrap.scrollIntoView({ behavior: 'smooth', block: 'center' }), 50);
+              }
+            });
+
+            // Peruuta piilottaa lomakkeen
+            cancelBtn.addEventListener('click', () => {
+              formWrap.classList.add('hidden');
+              formWrap.setAttribute('aria-hidden', 'true');
+              toggleBtn.setAttribute('aria-expanded', 'false');
+            });
+
+            // Formspree submit event → näytetään kiitosviesti
+            form.addEventListener("submit", async (e) => {
+              e.preventDefault();
+
+              const formData = new FormData(form);
+              const response = await fetch(form.action, {
+                method: form.method,
+                body: formData,
+                headers: { 'Accept': 'application/json' }
+              });
+
+              if (response.ok) {
+                form.innerHTML = `<p class="text-green-400 font-semibold text-center">✅ Kiitos viestistäsi! Otan sinuun yhteyttä pian.</p>`;
+              } else {
+                form.innerHTML = `<p class="text-red-400 font-semibold text-center">❌ Jokin meni pieleen. Yritä uudelleen myöhemmin.</p>`;
+              }
+            });
+          })();
+
+
+        window.addEventListener('scroll', () => {
+        const wrapper = document.getElementById('logoWrapper');
+        const logo = document.getElementById('heroLogo');
+        const heroText = document.getElementById('heroText');
+        const miniLogo = document.getElementById('miniLogo');
+      
+        const startTop = window.innerHeight * 0.15;
+        const endTop = 0;
+        const scrollY = window.scrollY;
+      
+        // Logo liikkuu
+        const newTop = Math.max(endTop, startTop - scrollY);
+        wrapper.style.top = newTop + "px";
+      
+        // Logo skaalautuu
+        const maxScale = 1.0;
+        const minScale = 0.6;
+        const scale = Math.max(minScale, maxScale - scrollY / 100);
+        logo.style.transform = `scale(${scale})`;
+      
+        // Wrapperin taustaväri
+        if (newTop <= endTop + 1) {
+          wrapper.style.backgroundColor = "black";
+          wrapper.style.transition = "background-color 0.2s ease";
+        } else {
+          wrapper.style.backgroundColor = "transparent";
+        }
+      
+        // Tekstin fade + display none
+        const fadeOutPoint = 150;
+        const opacity = Math.max(0, 1 - scrollY / fadeOutPoint);
+        heroText.style.opacity = opacity;
+      
+        if (opacity === 0) {
+          heroText.style.display = "none";
+        } else {
+          heroText.style.display = "block";
+        }
+      
+      // Näytä miniLogo kun scrollattu tarpeeksi alas
+      if (scrollY > 400) {
+        miniLogo.classList.add("opacity-100", "translate-x-0", "scale-100");
+        miniLogo.classList.remove("opacity-0", "translate-x-5", "scale-0");
+      } else {
+        miniLogo.classList.add("opacity-0", "translate-x-5", "scale-0");
+        miniLogo.classList.remove("opacity-100", "translate-x-0", "scale-100");
+      }
+      });
+
+        // Feedback widgetti
+        const widget = document.getElementById('feedbackWidget');
+        const closeBtn = document.getElementById('closeFeedback');
+        const emojiBtns = document.querySelectorAll('.emoji-btn');
+        const feedbackForm = document.getElementById('feedbackForm');
+        const feedbackInput = document.getElementById('feedbackInput');
+
+        // Sulje-widget
+        closeBtn.addEventListener('click', () => {
+          widget.style.display = 'none';
+        });
+
+        // Emoji-napin klikkaus -> lähetä palaute
+        emojiBtns.forEach(btn => {
+          btn.addEventListener('click', async () => {
+            // Aseta valittu arvo piilotettuun inputtiin
+            feedbackInput.value = btn.dataset.value;
+
+            // Luo FormData
+            const formData = new FormData(feedbackForm);
+
+            try {
+              // Lähetä Formspreen POST-pyyntö
+              const response = await fetch(feedbackForm.action, {
+                method: feedbackForm.method,
+                body: formData,
+                headers: { 'Accept': 'application/json' }
+              });
+
+              if (response.ok) {
+                // Näytä kiitosviesti
+                widget.innerHTML = `<span class="text-green-400 font-semibold">Kiitos palautteestasi! 🙌</span>`;
+                // Piilota widget parin sekunnin jälkeen
+                setTimeout(() => widget.style.display = 'none', 2000);
+              } else {
+                // Virhe
+                widget.innerHTML = `<span class="text-red-400 font-semibold">❌ Jokin meni pieleen. Yritä uudelleen myöhemmin.</span>`;
+              }
+            } catch (error) {
+              // Verkko-virhe
+              widget.innerHTML = `<span class="text-red-400 font-semibold">❌ Jokin meni pieleen. Yritä uudelleen myöhemmin.</span>`;
+            }
+          });
+        });
+
+        const nav = document.getElementById("mainNav");
+        const menuDesktop = document.getElementById("menuBtnDesktop");
+        const menuMobile = document.getElementById("menuBtnMobile");
+        const navMenuDesktop = document.getElementById("navMenuDesktop");
+        const navMenuMobile = document.getElementById("navMenuMobile");
+
+        // Näytä navbar kun scrollataan
+        window.addEventListener("scroll", () => {
+          if (window.scrollY > 200) {
+            nav.classList.remove("hidden");
+          } else {
+            nav.classList.add("hidden");
+            navMenuDesktop.classList.add("hidden");
+            navMenuMobile.classList.add("hidden");
+          }
+        });
+
+        // Toggle desktop menu
+        menuDesktop.addEventListener("click", () => {
+          navMenuDesktop.classList.toggle("hidden");
+          navMenuMobile.classList.add("hidden"); // sulje mobiili jos auki
+        });
+
+        // Toggle mobile menu
+        menuMobile.addEventListener("click", () => {
+          navMenuMobile.classList.toggle("hidden");
+          navMenuDesktop.classList.add("hidden"); // sulje desktop jos auki
+        });
+
+        // Sulje menu kun klikataan linkkiä
+        document.querySelectorAll("#navMenuDesktop a, #navMenuMobile a").forEach(link => {
+          link.addEventListener("click", () => {
+            navMenuDesktop.classList.add("hidden");
+            navMenuMobile.classList.add("hidden");
+          });
+        });
+
+        if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js').then(() => {
+    console.log('Service Worker rekisteröity');
+  });
+}
+        
+      </script>
+    </div>
+
+<!-- Footer -->
+<footer class="py-6 text-center text-gray-500 text-sm bg-gray-950 relative z-10">
+
+    <p>© 2025 Koolento FPV. All rights reserved.</p>
+
+  <div class="flex justify-center items-center gap-4 mb-2">
+    <!-- Suomi -->
+    <a href="/index.html" class="hover:opacity-80" aria-label="Suomi">
+      <img src="https://flagcdn.com/w20/fi.png" alt="Suomi" class="w-6 h-4 inline">
+    </a>
+    <!-- Englanti -->
+    <a href="/en/index.html" class="hover:opacity-80" aria-label="English">
+      <img src="https://flagcdn.com/w20/gb.png" alt="English" class="w-6 h-4 inline">
+    </a>
+  </div>
+
+</footer>
+  </body>
+</html>
