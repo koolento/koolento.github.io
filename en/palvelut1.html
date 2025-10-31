@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Services – Koolento FPV</title>
+  <meta name="description" content="Explore Koolento FPV's services: aerial photography, FPV drone flights, real estate & commercial videos, and engaging social media clips.">
+  <meta name="keywords" content="FPV, aerial photography, services, commercial video, real estate video, social media, drone">
+  <meta name="author" content="Koolento FPV">
+  <meta name="robots" content="index, follow">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+  </noscript>
+
+  <!-- Tailwind (säilytetään CDN, koska modalit ja interaktiot käyttävät sitä) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="../favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../favicon.png">
+
+<style>
+
+    #mainNav {
+    font-family: "Pacifico", cursive;
+    transition: all 0.3s ease;
+    }
+
+/* Yksinkertainen fade animaatio */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  .animate-fadeIn {
+    animation: fadeIn 0.3s ease-out;
+  }
+
+
+  h1 {
+  transition: all 0.3s ease-in-out;
+}
+
+/* Hover-efekti */
+h1:hover {
+  transform: scale(1.1);
+}
+
+ body {
+    background-image: url('../tausta11.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  @media (min-width: 768px) {
+    body {
+      background-image: url('../tausta6.png');
+    }
+  }
+
+  @media (min-width: 1920px) {
+    body {
+      background-image: url('../tausta12.png');
+    }
+  }
+
+</style>
+</head>
+
+<body class="bg-black text-white font-sans flex flex-col min-h-screen bg-cover bg-center bg-no-repeat">
+
+<header id="mainNav" class="fixed top-0 left-0 w-full z-50 bg-black/80">
+  <div class="flex items-center justify-between px-6 py-4">
+    
+    <!-- Desktop menu vasemmalla -->
+    <button id="menuBtnDesktop" aria-label="Avaa valikko" class="hidden md:block text-white text-2xl">
+      &#9776; <!-- hampurilaisikoni -->
+    </button>
+
+    <!-- Logo keskellä -->
+    <div class="flex-1 flex justify-center">
+    <a href="index.html" class="flex">
+      <img src="../heroLogo.png" alt="Koolento Logo" class="h-8">
+      <svg id="miniLogo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 40"
+     class="w-10 h-10 translate-x-5 transition-all duration-200 rotate-12">
+  <text x="0" y="30" font-family="Arial, sans-serif" font-size="30" font-weight="bold" fill="white">
+    FPV
+  </text>
+</svg>
+</a>
+</div>
+
+
+    <!-- Mobile menu oikealla -->
+    <button id="menuBtnMobile" aria-label="Avaa valikko" class="md:hidden text-white text-2xl">
+      &#9776;
+    </button>
+    
+</div>
+
+  <!-- Navigaatiolista -->
+  <!-- Desktop menu -->
+        <div id="navMenuDesktop" class="absolute top-full left-6 mt-2 hidden rounded-xl bg-gray-900/95 px-6 py-4 shadow-lg">
+          <ul class="flex flex-col gap-3 text-lg text-white">
+            <li><a href="index.html" class="hover:text-blue-400">Home</a></li>
+            <li><a href="portfolio_2.html" class="hover:text-blue-400">Portfolio</a></li>
+            <li><a href="palvelut1.html" class="hover:text-blue-400">Services</a></li>
+            <li><a href="yhteystiedot.html" class="hover:text-blue-400">Contact</a></li>
+          </ul>
+
+          <hr class="py-2 my-4 border-gray-700">
+
+  <div class="flex justify-center gap-6 text-white text-sm font-sans font-medium">
+    <a href="/index.html" class="hover:text-blue-400 font-family:Arial">FI</a>
+    <a href="/en/index.html" class="hover:text-blue-400">EN</a>
+  </div>
+
+        
+        </div>
+
+        <!-- Mobile menu -->
+        <div id="navMenuMobile" class="absolute top-full right-6 mt-2 hidden rounded-xl bg-gray-900/95 px-6 py-4 shadow-lg">
+          <ul class="flex flex-col gap-3 text-lg text-white">
+            <li><a href="index.html" class="hover:text-blue-400">Home</a></li>
+            <li><a href="portfolio_2.html" class="hover:text-blue-400">Portfolio</a></li>
+            <li><a href="palvelut1.html" class="hover:text-blue-400">Services</a></li>
+            <li><a href="yhteystiedot.html" class="hover:text-blue-400">Contact</a></li>
+          </ul>
+
+          <hr class="py-2 my-4 border-gray-700">
+
+  <div class="flex justify-center gap-6 text-white text-sm font-sans font-medium">
+    <a href="/index.html" class="hover:text-blue-400 font-family:Arial">FI</a>
+    <a href="/en/index.html" class="hover:text-blue-400">EN</a>
+  </div>
+
+        
+        </div>
+
+
+</header>
+
+
+
+<!-- Palvelut content, sama kun portfolio sivulla -->
+<section id="portfolio" class="relative py-20 px-6 md:px-20 text-center text-white bg-black/50">
+
+<!-- Portfolio otsikko -->
+<div class="relative flex justify-center overflow-visible px-12 md:px-24 py-20">
+  <!-- Glow -->
+  <h1 class="absolute text-5xl md:text-6xl font-bold text-center mt-12 mb-20 blur-xl opacity-90 text-blue-500 pointer-events-none"
+      style="font-family: 'Pacifico', cursive;">
+    Services
+  </h1>
+
+  <!-- Varsinainen otsikko -->
+  <h1 class="relative text-5xl md:text-6xl font-bold text-center mt-12 mb-20 text-white z-10"
+      style="font-family: 'Pacifico', cursive;">
+    <a href="palvelut1.html">Services</a>
+  </h1>
+</div>
+
+    <!-- Lyhyt teksti -->
+    <p class="text-lg mb-12">
+      I provide dynamic FPV drone filming alongside traditional aerial photography, creating content that stands out and leaves a lasting impression.
+    </p>
+    
+</section>
+
+<main class="flex-grow relative z-10">
+  <div class="absolute inset-0 bg-black/80 z-0"></div> <!-- overlay -->
+  
+<section id="services" class="text-center py-20 px-6 md:px-20 relative z-10 flex justify-center">
+    <h2 class="sr-only">Kortit</h2>
+  <div class="grid sm:grid-cols-1 gap-10 w-full max-w-2xl">
+    
+    <!-- Card 1 -->
+    <div onclick="openModal('service1')" 
+         class="relative group overflow-hidden rounded-2xl bg-blue-950 shadow-lg transform transition-transform duration-500 hover:scale-105 cursor-pointer">
+      <video autoplay muted loop playsinline 
+        class="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-700">
+        <source src="../8.mp4" type="video/mp4">
+      </video>
+      <div class="absolute inset-0 bg-black/60 group-hover:bg-black/40 transition-colors duration-700"></div>
+      <div class="relative p-6">
+        <h3 class="text-xl font-semibold mb-3">Aerial Filming</h3>
+        <p class="text-gray-300">Stunning aerial shots and dynamic FPV flights that capture landscapes from new perspectives.</p>
+      </div>
+    </div>
+
+    <!-- Card 2 -->
+    <div onclick="openModal('service2')" 
+         class="relative group overflow-hidden rounded-2xl bg-blue-950 shadow-lg transform transition-transform duration-500 hover:scale-105 cursor-pointer">
+      <video autoplay muted loop playsinline 
+        class="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-700">
+        <source src="../6.mp4" type="video/mp4">
+      </video>
+      <div class="absolute inset-0 bg-black/60 group-hover:bg-black/40 transition-colors duration-700"></div>
+      <div class="relative p-6">
+        <h3 class="text-xl font-semibold mb-3">Real Estate & Commercial Videos</h3>
+        <p class="text-gray-300">
+          Elegant and impactful video presentations for properties and marketing – creating a professional first impression.
+        </p>
+      </div>
+    </div>
+
+    <!-- Card 3 -->
+    <div onclick="openModal('service3')" 
+         class="relative group overflow-hidden rounded-2xl bg-blue-950 shadow-lg transform transition-transform duration-500 hover:scale-105 cursor-pointer">
+      <video autoplay muted loop playsinline 
+        class="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-700">
+        <source src="../3.mp4" type="video/mp4">
+      </video>
+      <div class="absolute inset-0 bg-black/60 group-hover:bg-black/40 transition-colors duration-700"></div>
+      <div class="relative p-6">
+        <h3 class="text-xl font-semibold mb-3">Showreels & Social Media</h3>
+        <p class="text-gray-300">
+          Fast-paced and visually engaging clips for social media that capture attention and boost visibility.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MODALS -->
+<div id="service1" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center text-center z-50">
+  <div class="bg-gray-900 rounded-2xl max-w-2xl w-full p-8 relative shadow-2xl animate-fadeIn">
+    <!-- Close Button -->
+    <button onclick="closeModal('service1')" 
+            class="absolute top-4 right-4 text-gray-300 hover:text-white text-2xl">&times;</button>
+    
+    <h2 class="text-2xl font-bold mb-4 text-white">✈️ Aerial Photography</h2>
+    <p class="text-gray-300 leading-relaxed">
+      
+See the world from a new perspective!  
+      With aerial photography, we create striking shots that make landscapes, events, and locations truly unique.  
+      Whether it's for a promotion, corporate video, or capturing memories, aerial footage adds a whole new dimension – immediately capturing the viewer's attention from the first second.
+    </p>
+  </div>
+</div>
+
+<div id="service2" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center text-center z-50">
+  <div class="bg-gray-900 rounded-2xl max-w-2xl w-full p-8 relative shadow-2xl animate-fadeIn">
+    <!-- Close Button -->
+    <button onclick="closeModal('service2')" 
+            class="absolute top-4 right-4 text-gray-300 hover:text-white text-2xl">&times;</button>
+    
+    <h2 class="text-2xl font-bold mb-4 text-white">🏡 Real Estate & Commercial Videos</h2>
+    <p class="text-gray-300 leading-relaxed">
+Give your property the presentation it deserves.  
+      Stylish and eye-catching real estate videos and commercial films immediately create a professional impression and attract interest.  
+      We film spaces and surroundings while telling a story that engages and convinces – a perfect solution for sales, rentals, or brand marketing.
+    </p>
+  </div>
+</div>
+
+<div id="service3" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center text-center z-50">
+  <div class="bg-gray-900 rounded-2xl max-w-2xl w-full p-8 relative shadow-2xl animate-fadeIn">
+    <!-- Close Button -->
+    <button onclick="closeModal('service3')" 
+            class="absolute top-4 right-4 text-gray-300 hover:text-white text-2xl">&times;</button>
+    
+    <h2 class="text-2xl font-bold mb-4 text-white">🎬 Showreels & Social Media</h2>
+    <p class="text-gray-300 leading-relaxed">
+      
+Grab attention – and be remembered.  
+      Social media demands fast-paced, visually engaging content, which is why we design content specifically for this purpose.  
+      Dynamic showreels and social clips showcase your brand in the best possible way: they stop scrollers in their tracks and effectively increase your visibility.
+    </p>
+  </div>
+</div>
+
+
+
+<!-- JavaScript Navbar -->
+<script>
+
+document.addEventListener('DOMContentLoaded', () => {
+  const nav = document.getElementById("mainNav");
+  const menuDesktop = document.getElementById("menuBtnDesktop");
+  const menuMobile = document.getElementById("menuBtnMobile");
+  const navMenuDesktop = document.getElementById("navMenuDesktop");
+  const navMenuMobile = document.getElementById("navMenuMobile");
+
+
+// Toggle desktop menu
+menuDesktop.addEventListener("click", () => {
+  navMenuDesktop.classList.toggle("hidden");
+  navMenuMobile.classList.add("hidden"); // sulje mobiili jos auki
+});
+
+// Toggle mobile menu
+menuMobile.addEventListener("click", () => {
+  navMenuMobile.classList.toggle("hidden");
+  navMenuDesktop.classList.add("hidden"); // sulje desktop jos auki
+});
+
+// Sulje menu kun klikataan linkkiä
+document.querySelectorAll("#navMenuDesktop a, #navMenuMobile a").forEach(link => {
+  link.addEventListener("click", () => {
+    navMenuDesktop.classList.add("hidden");
+    navMenuMobile.classList.add("hidden");
+  });
+});
+
+// Modal -funktiot (globaalit, jotta inline onclick toimii)
+  window.openModal = function(id) {
+    const modal = document.getElementById(id);
+    if (!modal) return;
+    modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+    modal.setAttribute('aria-hidden', 'false');
+  };
+  window.closeModal = function(id) {
+    const modal = document.getElementById(id);
+    if (!modal) return;
+    modal.classList.add('hidden');
+    document.body.style.overflow = '';
+    modal.setAttribute('aria-hidden', 'true');
+  };
+
+  // Sulje modal klikkaamalla backdropia
+  document.querySelectorAll('.modal').forEach(modal => {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.classList.add('hidden');
+        document.body.style.overflow = '';
+      }
+    });
+  });
+
+  // Sulje Esc-näppäimellä
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.modal:not(.hidden)').forEach(m => m.classList.add('hidden'));
+      document.body.style.overflow = '';
+    }
+  });
+
+});
+
+  function openModal(id) {
+    document.getElementById(id).classList.remove("hidden");
+  }
+  function closeModal(id) {
+    document.getElementById(id).classList.add("hidden");
+  }
+
+</script>
+
+</main>
+
+<!-- Footer -->
+<footer class="py-6 text-center text-gray-500 text-sm bg-gray-950 relative z-10">
+
+    <p>© 2025 Koolento FPV. All rights reserved.</p>
+
+  <div class="flex justify-center items-center gap-4 mb-2">
+    <!-- Suomi -->
+    <a href="/index.html" class="hover:opacity-80" aria-label="Suomi">
+      <img src="https://flagcdn.com/w20/fi.png" alt="Suomi" class="w-6 h-4 inline">
+    </a>
+    <!-- Englanti -->
+    <a href="/en/index.html" class="hover:opacity-80" aria-label="English">
+      <img src="https://flagcdn.com/w20/gb.png" alt="English" class="w-6 h-4 inline">
+    </a>
+  </div>
+
+</footer>
+
+</body>
+</html>
