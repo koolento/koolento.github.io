@@ -366,8 +366,10 @@
       <!-- Script: toggle + form handling -->
       <script>
 
-        // Tarkistetaan käyttäjän kieli
-   const userLang = navigator.language || navigator.userLanguage;
+
+  /* // Tarkistetaan käyttäjän kieli -script. Tämä pitää vielä editoida niin, ettei tule ohjauslooppeja ja että suomenkielinenkin voi tarkastella englanninkielisiä sivuja.
+        
+  const userLang = navigator.language || navigator.userLanguage;
 
   // Jos kieli alkaa "en" (englanti), ohjataan englanninkieliselle sivulle
   if (userLang.startsWith('en')) {
@@ -376,6 +378,8 @@
       window.location.href = '/en/index.html';
     }
   }
+
+  */
 
         (function () {
             const toggleBtn = document.getElementById('toggleContactForm');
