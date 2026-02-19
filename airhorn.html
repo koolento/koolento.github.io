@@ -44,28 +44,30 @@ body {
 
 <script>
 const pad = document.getElementById("pad");
-const baseAudio = document.getElementById("audio");
+const audio = document.getElementById("audio");
 
-// iOS tarvitsee tämän unlockin
+// iOS audio unlock
 document.addEventListener("touchstart", function unlock() {
-    baseAudio.play().then(() => {
-        baseAudio.pause();
-        baseAudio.currentTime = 0;
+    audio.play().then(() => {
+        audio.pause();
+        audio.currentTime = 0;
     }).catch(()=>{});
     document.removeEventListener("touchstart", unlock);
 }, { once: true });
 
 function playSound() {
-    // cloneNode mahdollistaa polyfonisen toiston
-    const sound = baseAudio.cloneNode();
-    sound.play();
+    // Pysäytä jos soi
+    audio.pause();
+    // Kelaa alkuun
+    audio.currentTime = 0;
+    // Soita
+    audio.play();
 }
 
 pad.addEventListener("pointerdown", function(e) {
     e.preventDefault();
     playSound();
 }, { passive: false });
-
 </script>
 
 </body>
