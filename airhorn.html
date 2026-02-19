@@ -67,7 +67,7 @@ async function initAudio() {
 async function loadAudio() {
     await initAudio();
 
-    const response = await fetch("./FF_CF_foley_airhorn_green.wav");
+    const response = await fetch("./FF_CF_foley_airhorn_green.mp3");
     const arrayBuffer = await response.arrayBuffer();
     audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
 
