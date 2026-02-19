@@ -6,86 +6,64 @@
 <title>Airhorn Pad</title>
 
 <style>
-    body {
-        margin: 0;
-        background: #111;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        font-family: sans-serif;
-        -webkit-user-select: none;
-        user-select: none;
-        touch-action: manipulation;
-    }
+body {
+    margin: 0;
+    background: #111;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: sans-serif;
+    touch-action: manipulation;
+}
 
-    #pad {
-        width: 260px;
-        height: 260px;
-        background: #e10600;
-        border-radius: 35px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 28px;
-        font-weight: bold;
-        color: white;
-        transition: transform 0.04s ease;
-    }
+#pad {
+    width: 260px;
+    height: 260px;
+    background: #e10600;
+    border-radius: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 28px;
+    font-weight: bold;
+    color: white;
+    transition: transform 0.05s;
+}
 
-    #pad:active {
-        transform: scale(0.95);
-    }
+#pad:active {
+    transform: scale(0.95);
+}
 </style>
 </head>
 <body>
 
-<div id="pad">TAP TO ARM</div>
+<div id="pad">AIRHORN 🔊</div>
+
+<audio id="audio" src="FF_CF_foley_airhorn_green.mp3" preload="auto"></audio>
 
 <script>
-let ctx = null;
-let buffer = null;
-let armed = false;
-
 const pad = document.getElementById("pad");
+const baseAudio = document.getElementById("audio");
 
-async function initAudio() {
-    if (armed) return;
+// iOS tarvitsee tämän unlockin
+document.addEventListener("touchstart", function unlock() {
+    baseAudio.play().then(() => {
+        baseAudio.pause();
+        baseAudio.currentTime = 0;
+    }).catch(()=>{});
+    document.removeEventListener("touchstart", unlock);
+}, { once: true });
 
-    ctx = new (window.AudioContext || window.webkitAudioContext)({
-        latencyHint: "interactive"
-    });
-
-    await ctx.resume();
-
-    const response = await fetch("FF_CF_foley_airhorn_green.mp3");
-    const arrayBuffer = await response.arrayBuffer();
-    buffer = await ctx.decodeAudioData(arrayBuffer);
-
-    armed = true;
-    pad.textContent = "AIRHORN 🔊";
+function playSound() {
+    // cloneNode mahdollistaa polyfonisen toiston
+    const sound = baseAudio.cloneNode();
+    sound.play();
 }
 
-function play() {
-    if (!buffer) return;
-
-    const src = ctx.createBufferSource();
-    src.buffer = buffer;
-    src.connect(ctx.destination);
-    src.start();
-}
-
-// Ensimmäinen kosketus → käynnistää audion
-pad.addEventListener("pointerdown", async (e) => {
+pad.addEventListener("pointerdown", function(e) {
     e.preventDefault();
-
-    if (!armed) {
-        await initAudio();
-        play(); // soitetaan heti kun valmis
-        return;
-    }
-
-    play();
+    playSound();
 }, { passive: false });
 
 </script>
