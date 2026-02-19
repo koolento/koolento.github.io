@@ -37,12 +37,8 @@
         background: #ff4d5a;
     }
 
-    input {
-        margin-top: 25px;
-    }
-
     .status {
-        margin-top: 10px;
+        margin-top: 15px;
         font-size: 14px;
         opacity: 0.7;
     }
@@ -51,8 +47,7 @@
 <body>
 
 <div id="pad">AIRHORN</div>
-<div class="status" id="status">Ladataan placeholder-audio...</div>
-<input type="file" id="fileInput" accept="audio/*">
+<div class="status" id="status">Valmistellaan audio...</div>
 
 <script>
 let audioContext;
@@ -69,28 +64,15 @@ async function initAudio() {
     }
 }
 
-async function loadPlaceholder() {
+async function loadAudio() {
     await initAudio();
 
-    // Julkinen airhorn placeholder
-    const response = await fetch("https://www.soundjay.com/misc/sounds/air-horn-01.mp3");
+    const response = await fetch("./FF_CF_foley_airhorn_green.wav");
     const arrayBuffer = await response.arrayBuffer();
     audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
 
     document.getElementById("status").textContent = "Valmis 🔊";
 }
-
-document.getElementById("fileInput").addEventListener("change", async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    await initAudio();
-
-    const arrayBuffer = await file.arrayBuffer();
-    audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
-
-    document.getElementById("status").textContent = "Oma audio ladattu 🔊";
-});
 
 function playSound() {
     if (!audioBuffer) return;
@@ -105,6 +87,7 @@ const pad = document.getElementById("pad");
 
 pad.addEventListener("pointerdown", async () => {
     await initAudio();
+    if (!audioBuffer) await loadAudio();
     playSound();
 });
 
@@ -112,12 +95,13 @@ document.addEventListener("keydown", async (e) => {
     if (e.code === "Space") {
         e.preventDefault();
         await initAudio();
+        if (!audioBuffer) await loadAudio();
         playSound();
     }
 });
 
-// Lataa placeholder automaattisesti
-loadPlaceholder();
+// Esiladataan audio
+loadAudio();
 </script>
 
 </body>
