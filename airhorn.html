@@ -4,104 +4,97 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Airhorn Pad</title>
+
 <style>
     body {
-        background: #111;
+        margin: 0;
+        background: #0d0d0d;
         display: flex;
-        flex-direction: column;
         justify-content: center;
         align-items: center;
         height: 100vh;
-        margin: 0;
         font-family: sans-serif;
-        color: white;
+        user-select: none;
     }
 
     #pad {
-        width: 220px;
-        height: 220px;
-        border-radius: 25px;
-        background: #e63946;
+        width: 240px;
+        height: 240px;
+        background: #e10600;
+        border-radius: 30px;
         display: flex;
         justify-content: center;
         align-items: center;
-        font-size: 26px;
+        font-size: 28px;
         font-weight: bold;
+        color: white;
         cursor: pointer;
-        user-select: none;
-        transition: transform 0.05s, background 0.05s;
+        transition: transform 0.04s ease;
+        touch-action: manipulation;
     }
 
     #pad:active {
-        transform: scale(0.95);
-        background: #ff4d5a;
-    }
-
-    .status {
-        margin-top: 15px;
-        font-size: 14px;
-        opacity: 0.7;
+        transform: scale(0.94);
     }
 </style>
 </head>
 <body>
 
 <div id="pad">AIRHORN</div>
-<div class="status" id="status">Valmistellaan audio...</div>
 
 <script>
-let audioContext;
-let audioBuffer = null;
+/* ==============================
+   ULTRA LOW LATENCY AIRHORN PAD
+   ============================== */
 
-async function initAudio() {
-    if (!audioContext) {
-        audioContext = new (window.AudioContext || window.webkitAudioContext)({
-            latencyHint: "interactive"
-        });
-    }
-    if (audioContext.state === "suspended") {
-        await audioContext.resume();
-    }
-}
+let ctx = new (window.AudioContext || window.webkitAudioContext)({
+    latencyHint: "interactive"
+});
 
-async function loadAudio() {
-    await initAudio();
+let buffer = null;
 
-    const response = await fetch("./FF_CF_foley_airhorn_green.mp3");
+// Preload & decode immediately
+(async () => {
+    const response = await fetch("FF_CF_foley_airhorn_green.mp3");
     const arrayBuffer = await response.arrayBuffer();
-    audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+    buffer = await ctx.decodeAudioData(arrayBuffer);
+})();
 
-    document.getElementById("status").textContent = "Valmis 🔊";
+// Unlock audio instantly on first interaction (mobile fix)
+async function unlock() {
+    if (ctx.state === "suspended") {
+        await ctx.resume();
+    }
 }
 
-function playSound() {
-    if (!audioBuffer) return;
+function play() {
+    if (!buffer) return;
 
-    const source = audioContext.createBufferSource();
-    source.buffer = audioBuffer;
-    source.connect(audioContext.destination);
-    source.start(0);
+    const src = ctx.createBufferSource();
+    src.buffer = buffer;
+    src.connect(ctx.destination);
+
+    // schedule immediately
+    src.start(ctx.currentTime);
 }
 
 const pad = document.getElementById("pad");
 
-pad.addEventListener("pointerdown", async () => {
-    await initAudio();
-    if (!audioBuffer) await loadAudio();
-    playSound();
-});
+// Pointer is fastest modern input event
+pad.addEventListener("pointerdown", async (e) => {
+    e.preventDefault();
+    await unlock();
+    play();
+}, { passive: false });
 
+// Keyboard trigger
 document.addEventListener("keydown", async (e) => {
     if (e.code === "Space") {
         e.preventDefault();
-        await initAudio();
-        if (!audioBuffer) await loadAudio();
-        playSound();
+        await unlock();
+        play();
     }
 });
-
-// Esiladataan audio
-loadAudio();
 </script>
 
 </body>
