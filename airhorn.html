@@ -2,101 +2,82 @@
 <html lang="fi">
 <head>
 <meta charset="UTF-8">
-
-<!-- Estää kaiken zoomauksen -->
 <meta name="viewport"
-content="width=device-width,
-initial-scale=1,
-maximum-scale=1,
-minimum-scale=1,
-user-scalable=no,
-viewport-fit=cover">
-
+      content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
 <title>Airhorn Pad</title>
 
 <style>
 html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    overflow: hidden; /* ei scrollia */
-    background: #111;
-    font-family: sans-serif;
-
-    /* Estää tekstin auto-zoomauksen iOS */
-    -webkit-text-size-adjust: 100%;
-
-    /* Estää tuplaklikki zoomin */
+    margin:0; padding:0; height:100%; overflow:hidden;
+    background:#111; font-family:sans-serif;
+    -webkit-text-size-adjust:100%;
     touch-action: manipulation;
 }
 
-body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+body { display:flex; justify-content:center; align-items:center; }
 
 #pad {
-    width: 260px;
-    height: 260px;
-    background: #e10600;
-    border-radius: 35px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 28px;
-    font-weight: bold;
-    color: white;
-
+    width:260px; height:260px; background:#e10600;
+    border-radius:35px; display:flex; justify-content:center; align-items:center;
+    font-size:28px; font-weight:bold; color:white;
     transition: transform 0.05s ease;
-
-    /* Estää valinnan ja highlightin */
-    user-select: none;
-    -webkit-user-select: none;
-    -webkit-tap-highlight-color: transparent;
+    user-select:none; -webkit-user-select:none; -webkit-tap-highlight-color:transparent;
 }
 
-#pad:active {
-    transform: scale(0.95);
-}
+#pad:active { transform: scale(0.95); }
 </style>
 </head>
 <body>
 
 <div id="pad">AIRHORN 🔊</div>
 
-<audio id="audio" src="FF_CF_foley_airhorn_green.mp3" preload="auto"></audio>
-
 <script>
+let ctx = null;
+let buffer = null;
+let source = null;
+let armed = false;
+
 const pad = document.getElementById("pad");
-const audio = document.getElementById("audio");
 
-// iOS unlock
-document.addEventListener("touchstart", function unlock() {
-    audio.play().then(() => {
-        audio.pause();
-        audio.currentTime = 0;
-    }).catch(()=>{});
-    document.removeEventListener("touchstart", unlock);
-}, { once: true });
+// Audio unlock mobiilissa
+async function initAudio() {
+    if (armed) return;
+    ctx = new (window.AudioContext || window.webkitAudioContext)({latencyHint:"interactive"});
 
-// Ei päällekkäin – alkaa aina alusta
-function playSound() {
-    audio.pause();
-    audio.currentTime = 0;
-    audio.play();
+    const response = await fetch("FF_CF_foley_airhorn_green.wav");
+    const arrayBuffer = await response.arrayBuffer();
+    buffer = await ctx.decodeAudioData(arrayBuffer);
+
+    armed = true;
 }
 
-// Käytetään pointerdown (ei click)
-pad.addEventListener("pointerdown", function(e) {
-    e.preventDefault();
-    playSound();
-}, { passive: false });
+// Non-overlap play
+function playSound() {
+    if (!buffer) return;
 
-// Estetään pinch-zoom
-document.addEventListener('gesturestart', function (e) {
+    if (source) {
+        try { source.stop(0); } catch(e){} 
+        source.disconnect();
+    }
+
+    source = ctx.createBufferSource();
+    source.buffer = buffer;
+    source.connect(ctx.destination);
+    source.start(0);
+}
+
+// Trigger mobiilissa pointerdown
+pad.addEventListener("pointerdown", async (e)=>{
     e.preventDefault();
-});
+
+    if (!armed) await initAudio();
+    if (ctx.state === "suspended") await ctx.resume();
+
+    playSound();
+}, {passive:false});
+
+// Estetään pinch/zoom
+document.addEventListener('gesturestart', e => e.preventDefault());
 </script>
 
 </body>
