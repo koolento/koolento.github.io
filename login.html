@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Kirjaudu — Matkahallinta</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #0f1117;
+    --paper: #f7f5f0;
+    --accent: #2d6a4f;
+    --accent2: #52b788;
+    --warm: #e9c46a;
+    --border: #d4cfc6;
+    --muted: #7a7468;
+    --error: #c1121f;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--paper);
+    min-height: 100dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Background texture */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 50% at 20% 80%, rgba(45,106,79,.08) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 80% 20%, rgba(82,183,136,.06) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  /* Decorative grid lines */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(45,106,79,.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(45,106,79,.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+  }
+
+  .card {
+    background: #fff;
+    border: 1.5px solid var(--border);
+    border-radius: 20px;
+    padding: 48px 40px;
+    width: 100%;
+    max-width: 420px;
+    position: relative;
+    box-shadow: 0 4px 40px rgba(15,17,23,.08), 0 1px 4px rgba(15,17,23,.04);
+  }
+
+  /* Top accent bar */
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 40px; right: 40px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border-radius: 0 0 3px 3px;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 32px;
+  }
+
+  .logo-icon {
+    width: 42px; height: 42px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(45,106,79,.3);
+  }
+
+  .logo-text h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.15rem;
+    color: var(--ink);
+    line-height: 1.1;
+  }
+
+  .logo-text p {
+    font-size: .73rem;
+    color: var(--muted);
+    letter-spacing: .5px;
+    text-transform: uppercase;
+  }
+
+  h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.7rem;
+    color: var(--ink);
+    margin-bottom: 6px;
+    line-height: 1.2;
+  }
+
+  .subtitle {
+    font-size: .88rem;
+    color: var(--muted);
+    margin-bottom: 32px;
+  }
+
+  .field {
+    margin-bottom: 18px;
+  }
+
+  label {
+    display: block;
+    font-size: .78rem;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: .6px;
+    margin-bottom: 7px;
+  }
+
+  input[type="email"],
+  input[type="password"] {
+    width: 100%;
+    padding: 13px 16px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: .95rem;
+    color: var(--ink);
+    background: var(--paper);
+    transition: all .2s;
+    -webkit-appearance: none;
+  }
+
+  input:focus {
+    outline: none;
+    border-color: var(--accent);
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(45,106,79,.08);
+  }
+
+  .btn {
+    width: 100%;
+    padding: 14px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: .95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .2s;
+    margin-top: 8px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn:hover { background: #1e5138; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(45,106,79,.3); }
+  .btn:active { transform: translateY(0); }
+  .btn:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+
+  .btn .spinner {
+    display: none;
+    width: 18px; height: 18px;
+    border: 2px solid rgba(255,255,255,.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin .7s linear infinite;
+    margin: 0 auto;
+  }
+
+  .btn.loading .btn-text { display: none; }
+  .btn.loading .spinner { display: block; }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .error-box {
+    background: #fff0f0;
+    border: 1.5px solid #ffc9c9;
+    border-radius: 8px;
+    padding: 11px 14px;
+    font-size: .85rem;
+    color: var(--error);
+    margin-top: 14px;
+    display: none;
+  }
+
+  .error-box.show { display: block; }
+
+  .footer-note {
+    text-align: center;
+    font-size: .75rem;
+    color: var(--muted);
+    margin-top: 24px;
+    line-height: 1.5;
+  }
+
+  .footer-note a { color: var(--accent); text-decoration: none; }
+
+  /* Mobile tweaks */
+  @media (max-width: 480px) {
+    .card { padding: 36px 24px; border-radius: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <div class="logo">
+    <div class="logo-icon">✈</div>
+    <div class="logo-text">
+      <h1>Matkahallinta</h1>
+      <p>Kirjanpito & korvaukset</p>
+    </div>
+  </div>
+
+  <h2>Tervetuloa</h2>
+  <p class="subtitle">Kirjaudu sisään jatkaaksesi</p>
+
+  <div class="field">
+    <label for="email">Sähköposti</label>
+    <input type="email" id="email" placeholder="nimi@esimerkki.fi" autocomplete="email" inputmode="email">
+  </div>
+
+  <div class="field">
+    <label for="password">Salasana</label>
+    <input type="password" id="password" placeholder="••••••••" autocomplete="current-password">
+  </div>
+
+  <button class="btn" id="login-btn" onclick="kirjaudu()">
+    <span class="btn-text">Kirjaudu sisään</span>
+    <div class="spinner"></div>
+  </button>
+
+  <div class="error-box" id="error-box"></div>
+
+  <p class="footer-note">
+    Unohditko salasanan? <a href="#" onclick="resetSalasana()">Lähetä palautuslinkki</a>
+  </p>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  const SUPABASE_URL = 'https://wpqpgpnxudoufmzdcqhv.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_aeetk2nXEQnKOTYS767A8w_3NOHaGbt';
+  const { createClient } = supabase;
+  const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  // Jos jo kirjautunut, ohjaa suoraan sovellukseen
+  sb.auth.getSession().then(({ data }) => {
+    if (data.session) window.location.href = 'app.html';
+  });
+
+  async function kirjaudu() {
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+    const btn = document.getElementById('login-btn');
+    const errBox = document.getElementById('error-box');
+
+    if (!email || !password) {
+      naytaVirhe('Täytä sähköposti ja salasana.');
+      return;
+    }
+
+    btn.classList.add('loading');
+    btn.disabled = true;
+    errBox.classList.remove('show');
+
+    const { error } = await sb.auth.signInWithPassword({ email, password });
+
+    if (error) {
+      btn.classList.remove('loading');
+      btn.disabled = false;
+      naytaVirhe(suomentaVirhe(error.message));
+    } else {
+      window.location.href = 'app.html';
+    }
+  }
+
+  async function resetSalasana() {
+    const email = document.getElementById('email').value.trim();
+    if (!email) { naytaVirhe('Kirjoita sähköpostiosoite ensin.'); return; }
+    await sb.auth.resetPasswordForEmail(email);
+    naytaVirhe('✅ Palautuslinkki lähetetty sähköpostiisi!');
+  }
+
+  function naytaVirhe(viesti) {
+    const el = document.getElementById('error-box');
+    el.textContent = viesti;
+    el.classList.add('show');
+  }
+
+  function suomentaVirhe(msg) {
+    if (msg.includes('Invalid login')) return 'Väärä sähköposti tai salasana.';
+    if (msg.includes('Email not confirmed')) return 'Vahvista sähköpostiosoitteesi ensin.';
+    if (msg.includes('Too many requests')) return 'Liian monta yritystä. Odota hetki.';
+    return 'Kirjautuminen epäonnistui. Yritä uudelleen.';
+  }
+
+  // Enter-näppäin
+  document.addEventListener('keydown', e => { if (e.key === 'Enter') kirjaudu(); });
+</script>
+</body>
+</html>

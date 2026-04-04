@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#1e6fbf">
+<title>Matkahallinta</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=Lora:ital,wght@0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --blue:#1e6fbf;--blue2:#2e8ae0;--blue-dark:#1450a3;
+  --blue-light:#ebf5ff;--sky:#e8f4fd;--sky2:#d0eaf9;
+  --ink:#0d1b2a;--card:#fff;--paper:#f0f7ff;
+  --border:#c8dff5;--muted:#5a7a9a;
+  --success:#0a8754;--success-bg:#e8f7f0;
+  --warn:#b45309;--warn-bg:#fef3c7;
+  --error:#c0192a;--error-bg:#fff0f2;
+  --nav-h:64px;--safe-b:env(safe-area-inset-bottom,0px);--r:14px;
+}
+html{font-size:16px}
+body{font-family:'Sora',sans-serif;background:var(--paper);color:var(--ink);min-height:100dvh;padding-bottom:calc(var(--nav-h) + var(--safe-b) + 20px);overscroll-behavior:none}
+.topbar{position:sticky;top:0;z-index:100;background:rgba(240,247,255,.93);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1.5px solid var(--border);padding:0 16px;height:54px;display:flex;align-items:center;justify-content:space-between}
+.topbar-brand{font-family:'Lora',serif;font-size:1.1rem;font-weight:600;color:var(--blue);display:flex;align-items:center;gap:8px}
+.pulse{width:9px;height:9px;border-radius:50%;background:var(--blue2);box-shadow:0 0 0 3px rgba(46,138,224,.2);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 3px rgba(46,138,224,.2)}50%{box-shadow:0 0 0 6px rgba(46,138,224,.05)}}
+.user-pill{font-size:.72rem;color:var(--muted);background:var(--sky);border:1px solid var(--border);border-radius:20px;padding:4px 10px;max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.icon-btn{width:34px;height:34px;border-radius:50%;border:1.5px solid var(--border);background:var(--card);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.85rem;color:var(--muted);transition:all .15s;margin-left:6px}
+.icon-btn:hover{background:var(--sky);color:var(--blue)}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:100;background:rgba(255,255,255,.96);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1.5px solid var(--border);height:calc(var(--nav-h) + var(--safe-b));padding-bottom:var(--safe-b);display:flex;align-items:flex-start;padding-top:6px}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:5px 0;transition:all .15s}
+.nav-icon{width:48px;height:30px;border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:1.05rem;transition:all .2s}
+.nav-label{font-size:.62rem;font-weight:500;color:var(--muted);letter-spacing:.3px;transition:color .2s}
+.nav-item.active .nav-icon{background:var(--blue-light)}
+.nav-item.active .nav-label{color:var(--blue);font-weight:700}
+.panel{display:none;padding:14px}
+.panel.active{display:block}
+.card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);padding:18px;margin-bottom:12px;box-shadow:0 2px 8px rgba(30,111,191,.06)}
+.card-title{font-family:'Lora',serif;font-size:1rem;font-weight:600;color:var(--ink);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.card-title small{font-family:'Sora',sans-serif;font-size:.72rem;color:var(--muted);font-weight:400}
+.field{margin-bottom:12px}
+.field label{display:block;font-size:.7rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px}
+.field input,.field select,.field textarea{width:100%;padding:11px 13px;border:1.5px solid var(--border);border-radius:10px;font-family:'Sora',sans-serif;font-size:1rem;color:var(--ink);background:var(--paper);transition:all .2s;-webkit-appearance:none;appearance:none}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--blue);background:#fff;box-shadow:0 0 0 4px rgba(30,111,191,.1)}
+.field textarea{min-height:72px;resize:none}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.row2 .field{margin-bottom:0}
+.btn{padding:12px 18px;border-radius:10px;border:none;cursor:pointer;font-family:'Sora',sans-serif;font-size:.9rem;font-weight:600;transition:all .18s;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.btn-primary{background:var(--blue);color:#fff;width:100%}
+.btn-primary:hover{background:var(--blue-dark)}
+.btn-primary:active{transform:scale(.98)}
+.btn-secondary{background:var(--card);color:var(--ink);border:1.5px solid var(--border);width:100%;margin-top:8px}
+.btn-ghost{background:var(--sky);color:var(--blue);border:1.5px solid var(--border)}
+.btn-sm{padding:7px 12px;font-size:.78rem;border-radius:8px}
+.btn-danger{background:var(--error-bg);color:var(--error);border:1px solid #fecdd3}
+.result-box{background:linear-gradient(135deg,var(--blue-light),var(--sky));border:1.5px solid var(--border);border-radius:12px;padding:14px;margin:12px 0}
+.result-label{font-size:.68rem;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.result-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px dashed rgba(30,111,191,.15);font-size:.86rem}
+.result-row:last-child{border:none;font-weight:700;font-size:.98rem;color:var(--blue);margin-top:4px;padding-top:8px;border-top:1.5px solid rgba(30,111,191,.2)}
+.rates-pill{background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:8px 11px;font-size:.76rem;color:var(--muted);margin-bottom:10px;line-height:1.6}
+.rates-pill strong{color:var(--blue)}
+.year-tabs{display:flex;gap:6px;margin-bottom:14px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
+.year-tabs::-webkit-scrollbar{display:none}
+.year-tab{padding:6px 14px;border-radius:20px;font-size:.8rem;font-weight:600;border:1.5px solid var(--border);background:var(--card);color:var(--muted);cursor:pointer;flex-shrink:0;transition:all .15s;white-space:nowrap}
+.year-tab.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+.year-summary{background:linear-gradient(135deg,var(--blue) 0%,var(--blue2) 100%);border-radius:var(--r);padding:18px;margin-bottom:12px;color:#fff}
+.year-summary h3{font-family:'Lora',serif;font-size:1.2rem;margin-bottom:14px;opacity:.9}
+.year-summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ys-item{background:rgba(255,255,255,.12);border-radius:10px;padding:12px}
+.ys-num{font-family:'Lora',serif;font-size:1.3rem;font-weight:600}
+.ys-label{font-size:.67rem;opacity:.8;text-transform:uppercase;letter-spacing:.4px;margin-top:2px}
+.ys-total{background:rgba(255,255,255,.2);border-radius:10px;padding:12px 14px;margin-top:10px;display:flex;justify-content:space-between;align-items:center}
+.ys-total .lbl{font-size:.8rem;opacity:.9}
+.ys-total .val{font-family:'Lora',serif;font-size:1.4rem;font-weight:600}
+.matka-item{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);padding:15px;margin-bottom:10px;position:relative;overflow:hidden;box-shadow:0 1px 4px rgba(30,111,191,.06)}
+.matka-item::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--blue2);border-radius:4px 0 0 4px}
+.matka-item.tila-lahetetty::before{background:var(--warn)}
+.matka-item.tila-hyvaksytty::before{background:var(--success)}
+.matka-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px}
+.matka-nimi{font-weight:700;font-size:.95rem;flex:1;padding-right:8px;line-height:1.3}
+.tila-pill{font-size:.65rem;font-weight:700;padding:3px 8px;border-radius:20px;text-transform:uppercase;letter-spacing:.4px;flex-shrink:0}
+.tila-avoin{background:var(--warn-bg);color:var(--warn)}
+.tila-lahetetty{background:#e0f2fe;color:#0369a1}
+.tila-hyvaksytty{background:var(--success-bg);color:var(--success)}
+.matka-meta{font-size:.78rem;color:var(--muted);margin-bottom:10px;line-height:1.5}
+.matka-footer{display:flex;justify-content:space-between;align-items:center}
+.matka-summa{font-family:'Lora',serif;font-size:1.1rem;color:var(--blue)}
+.matka-actions{display:flex;gap:6px}
+.kulu-rivi{background:var(--paper);border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:8px;position:relative}
+.kulu-delete{position:absolute;top:10px;right:10px;width:24px;height:24px;border-radius:50%;border:1px solid #fecdd3;background:var(--error-bg);color:var(--error);font-size:.75rem;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.receipt-upload{border:2px dashed var(--border);border-radius:10px;padding:12px;text-align:center;cursor:pointer;transition:all .2s;background:var(--paper);margin-top:8px;display:block}
+.receipt-upload:hover{border-color:var(--blue);background:var(--blue-light)}
+.receipt-upload input{display:none}
+.upload-label{font-size:.82rem;color:var(--muted)}
+.upload-label strong{color:var(--blue)}
+.receipt-thumb{width:100%;max-height:110px;object-fit:cover;border-radius:8px;margin-top:6px;border:1px solid var(--border)}
+.receipt-fname{font-size:.74rem;color:var(--success);margin-top:5px;display:flex;align-items:center;gap:4px;justify-content:center}
+.modal-overlay{position:fixed;inset:0;z-index:200;background:rgba(13,27,42,.5);backdrop-filter:blur(4px);display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal{background:var(--card);border-radius:20px 20px 0 0;width:100%;max-width:600px;max-height:92dvh;overflow-y:auto;padding:20px 18px calc(20px + var(--safe-b));transform:translateY(40px);transition:transform .3s}
+.modal-overlay.open .modal{transform:translateY(0)}
+.modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.modal-title{font-family:'Lora',serif;font-size:1.1rem;font-weight:600}
+.modal-close{width:32px;height:32px;border-radius:50%;background:var(--paper);border:1px solid var(--border);font-size:.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--muted)}
+.vienti-info{background:var(--blue-light);border:1.5px solid var(--border);border-radius:10px;padding:12px 14px;font-size:.82rem;color:var(--blue);margin-bottom:14px;line-height:1.5}
+.empty{text-align:center;padding:44px 20px;color:var(--muted)}
+.empty .ei{font-size:2.4rem;margin-bottom:10px}
+.empty p{font-size:.88rem;line-height:1.6}
+#toast{position:fixed;bottom:calc(var(--nav-h) + var(--safe-b) + 14px);left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:10px 20px;border-radius:30px;font-size:.86rem;font-weight:500;white-space:nowrap;opacity:0;pointer-events:none;transition:all .3s;z-index:999;box-shadow:0 4px 20px rgba(0,0,0,.2)}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+#loading-screen{position:fixed;inset:0;background:var(--paper);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px;z-index:999}
+.spinner{width:34px;height:34px;border:3px solid var(--sky2);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+#loading-screen p{font-size:.85rem;color:var(--muted)}
+</style>
+</head>
+<body>
+
+<div id="loading-screen"><div class="spinner"></div><p>Ladataan...</p></div>
+
+<div class="topbar">
+  <div class="topbar-brand"><div class="pulse"></div>Matkahallinta</div>
+  <div style="display:flex;align-items:center">
+    <div class="user-pill" id="user-email">—</div>
+    <div class="icon-btn" onclick="kirjauduUlos()" title="Kirjaudu ulos">↩</div>
+  </div>
+</div>
+
+<!-- UUSI MATKA -->
+<div id="panel-uusi" class="panel active">
+  <div class="card">
+    <div class="card-title">✈️ Uusi matka</div>
+    <div class="field"><label>Kohde / matkan nimi</label><input type="text" id="m-nimi" placeholder="esim. Asiakaskäynti Tampere"></div>
+    <div class="field"><label>Kohdeosoite</label><input type="text" id="m-osoite" placeholder="Kadunnimi 1, Kaupunki"></div>
+    <div class="row2">
+      <div class="field"><label>Lähtöpäivä</label><input type="date" id="m-lahto-pvm"></div>
+      <div class="field"><label>Lähtöaika</label><input type="time" id="m-lahto-aika"></div>
+    </div>
+    <div class="row2">
+      <div class="field"><label>Paluupäivä</label><input type="date" id="m-paluu-pvm"></div>
+      <div class="field"><label>Paluuaika</label><input type="time" id="m-paluu-aika"></div>
+    </div>
+    <div class="row2">
+      <div class="field">
+        <label>Kulkuneuvo</label>
+        <select id="m-kulkuneuvo" onchange="toggleKm()">
+          <option value="oma-auto">Oma auto</option><option value="tyoauto">Työauto</option>
+          <option value="julkinen">Julkinen liikenne</option><option value="taksi">Taksi</option>
+          <option value="lento">Lento</option><option value="juna">Juna</option><option value="muu">Muu</option>
+        </select>
+      </div>
+      <div class="field" id="km-field"><label>Kilometrit</label><input type="number" id="m-km" placeholder="0" min="0" inputmode="numeric"></div>
+    </div>
+    <div class="field"><label>Tarkoitus</label><input type="text" id="m-tarkoitus" placeholder="esim. asiakaskokous..."></div>
+    <button class="btn btn-secondary" onclick="laskePaivaraha()">🧮 Laske päiväraha</button>
+  </div>
+  <div id="laskelma-card" class="card" style="display:none">
+    <div class="card-title">📊 Laskelma</div>
+    <div id="laskelma-content"></div>
+    <button class="btn btn-primary" id="tallenna-btn" onclick="tallenna()">💾 Tallenna matka</button>
+  </div>
+  <div id="kulut-card" class="card" style="display:none">
+    <div class="card-title">🧾 Kulut <small>(valinnainen)</small></div>
+    <div id="kulut-lista"></div>
+    <button class="btn btn-ghost btn-sm" onclick="lisaaKulu()" style="width:auto;margin-top:4px">➕ Lisää kulu</button>
+  </div>
+</div>
+
+<!-- HISTORIA -->
+<div id="panel-historia" class="panel">
+  <div class="year-tabs" id="year-tabs"></div>
+  <div id="year-summary-box"></div>
+  <div id="historia-lista"><div class="empty"><div class="ei">🗺️</div><p>Ei vielä matkoja.</p></div></div>
+</div>
+
+<!-- VIENTI -->
+<div id="panel-vienti" class="panel">
+  <div class="card">
+    <div class="card-title">📥 Vie tiedot</div>
+    <div class="vienti-info">Lataa CSV Exceliin tai avaa tulostusnäkymä PDF:ksi — kuittilinkit mukana.</div>
+    <div class="field"><label>Nimesi</label><input type="text" id="v-nimi" placeholder="Etunimi Sukunimi"></div>
+    <div class="field"><label>Yritys</label><input type="text" id="v-yritys" placeholder="Yritys Oy"></div>
+    <button class="btn btn-primary" onclick="vieCSV()">⬇ Lataa CSV</button>
+    <button class="btn btn-secondary" onclick="tulostaRaportti()">🖨 Avaa tulostusnäkymä</button>
+  </div>
+</div>
+
+<nav class="bottom-nav">
+  <div class="nav-item active" onclick="nayta('uusi')" id="nav-uusi"><div class="nav-icon">✈️</div><div class="nav-label">Uusi</div></div>
+  <div class="nav-item" onclick="nayta('historia')" id="nav-historia"><div class="nav-icon">📋</div><div class="nav-label">Historia</div></div>
+  <div class="nav-item" onclick="nayta('vienti')" id="nav-vienti"><div class="nav-icon">📥</div><div class="nav-label">Vie</div></div>
+</nav>
+
+<!-- EDIT MODAL -->
+<div class="modal-overlay" id="edit-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">✏️ Muokkaa matkaa</div>
+      <div class="modal-close" onclick="suljeModal()">✕</div>
+    </div>
+    <div class="field"><label>Kohde / nimi</label><input type="text" id="e-nimi"></div>
+    <div class="field"><label>Osoite</label><input type="text" id="e-osoite"></div>
+    <div class="row2">
+      <div class="field"><label>Lähtöpäivä</label><input type="date" id="e-lahto-pvm"></div>
+      <div class="field"><label>Lähtöaika</label><input type="time" id="e-lahto-aika"></div>
+    </div>
+    <div class="row2">
+      <div class="field"><label>Paluupäivä</label><input type="date" id="e-paluu-pvm"></div>
+      <div class="field"><label>Paluuaika</label><input type="time" id="e-paluu-aika"></div>
+    </div>
+    <div class="row2">
+      <div class="field">
+        <label>Kulkuneuvo</label>
+        <select id="e-kulkuneuvo">
+          <option value="oma-auto">Oma auto</option><option value="tyoauto">Työauto</option>
+          <option value="julkinen">Julkinen liikenne</option><option value="taksi">Taksi</option>
+          <option value="lento">Lento</option><option value="juna">Juna</option><option value="muu">Muu</option>
+        </select>
+      </div>
+      <div class="field"><label>Kilometrit</label><input type="number" id="e-km" min="0" inputmode="numeric"></div>
+    </div>
+    <div class="field"><label>Tarkoitus</label><input type="text" id="e-tarkoitus"></div>
+    <div class="field">
+      <label>Tila</label>
+      <select id="e-tila">
+        <option value="avoin">Avoin</option>
+        <option value="lahetetty">Lähetetty</option>
+        <option value="hyvaksytty">Hyväksytty</option>
+      </select>
+    </div>
+    <div style="margin:14px 0 6px">
+      <div class="card-title" style="margin-bottom:10px;font-size:.95rem">🧾 Kulut</div>
+      <div id="edit-kulut-lista"></div>
+      <button class="btn btn-ghost btn-sm" onclick="lisaaEditKulu()" style="width:auto;margin-top:4px">➕ Lisää kulu</button>
+    </div>
+    <button class="btn btn-primary" id="edit-save-btn" style="margin-top:12px">💾 Tallenna muutokset</button>
+    <div style="height:8px"></div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL='https://wpqpgpnxudoufmzdcqhv.supabase.co';
+const SUPABASE_KEY='sb_publishable_aeetk2nXEQnKOTYS767A8w_3NOHaGbt';
+const {createClient}=supabase;
+const sb=createClient(SUPABASE_URL,SUPABASE_KEY);
+
+let currentUser=null,matkat=[],aktiivisetKulut=[],laskelmaData=null;
+let editMatkaId=null,editKulut=[],valittuVuosi=new Date().getFullYear();
+
+const KOR={
+  2020:{osa:20,koko:44,km:0.44},2021:{osa:20,koko:44,km:0.44},
+  2022:{osa:20,koko:45,km:0.46},2023:{osa:23,koko:48,km:0.53},
+  2024:{osa:24,koko:53,km:0.59},2025:{osa:24,koko:53,km:0.59},
+  2026:{osa:25,koko:54,km:0.55}
+};
+function haeKor(v){
+  if(KOR[v])return KOR[v];
+  const kk=Object.keys(KOR).map(Number).sort((a,b)=>b-a);
+  return KOR[kk.find(x=>x<=v)||kk[kk.length-1]];
+}
+
+async function init(){
+  const {data:{session}}=await sb.auth.getSession();
+  if(!session){window.location.href='login.html';return;}
+  currentUser=session.user;
+  document.getElementById('user-email').textContent=currentUser.email;
+  await lataaMatkat();
+  document.getElementById('loading-screen').style.display='none';
+  const t=new Date().toISOString().slice(0,10);
+  document.getElementById('m-lahto-pvm').value=t;
+  document.getElementById('m-paluu-pvm').value=t;
+  document.getElementById('m-lahto-aika').value='08:00';
+  document.getElementById('m-paluu-aika').value='17:00';
+}
+
+function nayta(p){
+  document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));
+  document.getElementById('panel-'+p).classList.add('active');
+  document.getElementById('nav-'+p).classList.add('active');
+  if(p==='historia')paivitaHistoria();
+}
+
+function laskePaivaraha(){
+  const lp=document.getElementById('m-lahto-pvm').value;
+  const la=document.getElementById('m-lahto-aika').value;
+  const pp=document.getElementById('m-paluu-pvm').value;
+  const pa=document.getElementById('m-paluu-aika').value;
+  const km=parseFloat(document.getElementById('m-km').value)||0;
+  if(!lp||!la||!pp||!pa){toast('⚠️ Täytä päivä- ja aikatiedot');return;}
+  const L=new Date(lp+'T'+la),P=new Date(pp+'T'+pa);
+  if(P<=L){toast('⚠️ Paluuaika ennen lähtöaikaa');return;}
+  const v=L.getFullYear(),k=haeKor(v);
+  const min=(P-L)/60000,h=min/60,paivat=Math.floor(h/24),jatko=paivat>0?h%24:h;
+  const tunnit=Math.floor(h),minuutit=Math.round(min%60);
+  let paivaraha=paivat*k.koko,rivit=[];
+  if(paivat>0)rivit.push([`${paivat} × kokopäiväraha`,`${(paivat*k.koko).toFixed(2)} €`]);
+  if(jatko>=10){paivaraha+=k.koko;rivit.push(['Kokopäiväraha (≥10h)',`${k.koko.toFixed(2)} €`]);}
+  else if(jatko>=6){paivaraha+=k.osa;rivit.push([paivat>0?'Jatkuva osuus (6-10h)':'Osapäiväraha',`${k.osa.toFixed(2)} €`]);}
+  else if(paivat===0)rivit.push(['Alle 6h — ei päivärahaa','0,00 €']);
+  const kmK=km*k.km;
+  if(km>0)rivit.push([`${km} km × ${k.km} €/km`,`${kmK.toFixed(2)} €`]);
+  const yht=paivaraha+kmK;
+  laskelmaData={kestotunnit:h,tunnit,minuutit,paivaraha,kmKorvaus:kmK,yhteensa:yht,vuosi:v,kor:k};
+  document.getElementById('laskelma-content').innerHTML=
+    `<p style="font-size:.82rem;color:var(--muted);margin-bottom:10px">Kesto: <strong>${tunnit}h ${minuutit}min</strong></p>
+    <div class="rates-pill">Verohallinto <strong>${v}</strong>: osa <strong>${k.osa}€</strong> · koko <strong>${k.koko}€</strong> · km <strong>${k.km}€/km</strong></div>
+    <div class="result-box"><div class="result-label">Laskelma</div>
+    ${rivit.map(([l,vv])=>`<div class="result-row"><span>${l}</span><span>${vv}</span></div>`).join('')}
+    <div class="result-row"><span>Yhteensä</span><span>${yht.toFixed(2)} €</span></div></div>`;
+  document.getElementById('laskelma-card').style.display='block';
+  document.getElementById('kulut-card').style.display='block';
+  document.getElementById('laskelma-card').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function lisaaKulu(){
+  aktiivisetKulut.push({id:Date.now(),tyyppi:'',kuvaus:'',summa:'',file:null,localUrl:null});
+  renderKulut();
+}
+function renderKulut(){
+  const el=document.getElementById('kulut-lista');
+  if(!aktiivisetKulut.length){el.innerHTML='';return;}
+  el.innerHTML=aktiivisetKulut.map(k=>`
+    <div class="kulu-rivi">
+      <button class="kulu-delete" onclick="rmKulu(${k.id})">✕</button>
+      <div class="row2" style="margin-bottom:8px">
+        <div class="field" style="margin:0"><label>Tyyppi</label>
+          <select onchange="setKulu(${k.id},'tyyppi',this.value)">
+            <option value="" ${!k.tyyppi?'selected':''}>Valitse...</option>
+            ${['Majoitus','Ruokailu','Liikenne','Pysäköinti','Edustus','Muu'].map(t=>`<option ${k.tyyppi===t?'selected':''}>${t}</option>`).join('')}
+          </select></div>
+        <div class="field" style="margin:0"><label>Summa (€)</label>
+          <input type="number" value="${k.summa}" placeholder="0.00" inputmode="decimal" step="0.01" onchange="setKulu(${k.id},'summa',this.value)"></div>
+      </div>
+      <div class="field" style="margin-bottom:8px"><label>Kuvaus</label>
+        <input type="text" value="${k.kuvaus}" placeholder="Lyhyt kuvaus..." onchange="setKulu(${k.id},'kuvaus',this.value)"></div>
+      <label class="receipt-upload" onclick="document.getElementById('rf${k.id}').click()">
+        <input type="file" id="rf${k.id}" accept="image/*,application/pdf" onchange="setFile(${k.id},this)">
+        ${k.localUrl?`<img class="receipt-thumb" src="${k.localUrl}"><div class="receipt-fname">✅ ${k.file?.name||'Kuitti'}</div>`
+          :`<div class="upload-label">📎 <strong>Lisää kuitti</strong> (kuva tai PDF)</div>`}
+      </label>
+    </div>`).join('');
+}
+function setKulu(id,f,v){const k=aktiivisetKulut.find(x=>x.id===id);if(k)k[f]=v;}
+function rmKulu(id){aktiivisetKulut=aktiivisetKulut.filter(k=>k.id!==id);renderKulut();}
+function setFile(id,inp){
+  const k=aktiivisetKulut.find(x=>x.id===id);if(!k||!inp.files[0])return;
+  k.file=inp.files[0];k.localUrl=inp.files[0].type.startsWith('image/')?URL.createObjectURL(inp.files[0]):null;
+  renderKulut();
+}
+
+async function tallenna(){
+  if(!laskelmaData){laskePaivaraha();return;}
+  const nimi=document.getElementById('m-nimi').value;
+  if(!nimi){toast('⚠️ Anna kohteen nimi');return;}
+  const btn=document.getElementById('tallenna-btn');
+  btn.disabled=true;btn.textContent='Tallennetaan...';
+  const {data:md,error}=await sb.from('matkat').insert({
+    user_id:currentUser.id,nimi,
+    osoite:document.getElementById('m-osoite').value,
+    lahto_pvm:document.getElementById('m-lahto-pvm').value,
+    lahto_aika:document.getElementById('m-lahto-aika').value,
+    paluu_pvm:document.getElementById('m-paluu-pvm').value,
+    paluu_aika:document.getElementById('m-paluu-aika').value,
+    kulkuneuvo:document.getElementById('m-kulkuneuvo').value,
+    km:parseFloat(document.getElementById('m-km').value)||0,
+    tarkoitus:document.getElementById('m-tarkoitus').value,
+    kesto_tunnit:laskelmaData.kestotunnit,
+    paivaraha:laskelmaData.paivaraha,km_korvaus:laskelmaData.kmKorvaus,
+    yhteensa:laskelmaData.yhteensa,lahto_vuosi:laskelmaData.vuosi,tila:'avoin'
+  }).select().single();
+  if(error){toast('❌ '+error.message);btn.disabled=false;btn.textContent='💾 Tallenna matka';return;}
+  for(const k of aktiivisetKulut){
+    if(!k.summa)continue;
+    let kuitti_url=null;
+    if(k.file){
+      const p=`${currentUser.id}/${md.id}_${Date.now()}.${k.file.name.split('.').pop()}`;
+      const {data:sd}=await sb.storage.from('kuitit').upload(p,k.file,{upsert:true});
+      if(sd)kuitti_url=p;
+    }
+    await sb.from('kulut').insert({matka_id:md.id,user_id:currentUser.id,tyyppi:k.tyyppi,kuvaus:k.kuvaus,summa:parseFloat(k.summa)||0,alv:'0',kuitti:!!k.file,kuitti_url});
+  }
+  toast('✅ Matka tallennettu!');
+  tyhjennaLomake();await lataaMatkat();
+  btn.disabled=false;btn.textContent='💾 Tallenna matka';
+}
+
+function tyhjennaLomake(){
+  ['m-nimi','m-osoite','m-km','m-tarkoitus'].forEach(id=>document.getElementById(id).value='');
+  const t=new Date().toISOString().slice(0,10);
+  document.getElementById('m-lahto-pvm').value=t;document.getElementById('m-paluu-pvm').value=t;
+  document.getElementById('m-lahto-aika').value='08:00';document.getElementById('m-paluu-aika').value='17:00';
+  document.getElementById('laskelma-card').style.display='none';
+  document.getElementById('kulut-card').style.display='none';
+  aktiivisetKulut=[];laskelmaData=null;renderKulut();
+}
+
+async function lataaMatkat(){
+  const {data}=await sb.from('matkat').select('*,kulut(*)').order('lahto_pvm',{ascending:false});
+  matkat=data||[];
+}
+
+function paivitaHistoria(){
+  const vuodet=[...new Set(matkat.map(m=>m.lahto_vuosi||new Date(m.lahto_pvm||'2024').getFullYear()))].sort((a,b)=>b-a);
+  if(!vuodet.includes(valittuVuosi)&&vuodet.length)valittuVuosi=vuodet[0];
+  document.getElementById('year-tabs').innerHTML=
+    `<div class="year-tab ${valittuVuosi===0?'active':''}" onclick="valitseVuosi(0)">Kaikki</div>`
+    +vuodet.map(v=>`<div class="year-tab ${v===valittuVuosi?'active':''}" onclick="valitseVuosi(${v})">${v}</div>`).join('');
+  const S=valittuVuosi===0?matkat:matkat.filter(m=>(m.lahto_vuosi||new Date(m.lahto_pvm||'2024').getFullYear())===valittuVuosi);
+  const yP=S.reduce((s,m)=>s+(m.paivaraha||0),0);
+  const yK=S.reduce((s,m)=>s+(m.km_korvaus||0),0);
+  const yKu=S.reduce((s,m)=>s+(m.kulut||[]).reduce((ss,k)=>ss+(k.summa||0),0),0);
+  document.getElementById('year-summary-box').innerHTML=S.length?`
+    <div class="year-summary">
+      <h3>${valittuVuosi===0?'Kaikki vuodet':valittuVuosi}</h3>
+      <div class="year-summary-grid">
+        <div class="ys-item"><div class="ys-num">${yP.toFixed(0)} €</div><div class="ys-label">Päivärahat</div></div>
+        <div class="ys-item"><div class="ys-num">${yK.toFixed(0)} €</div><div class="ys-label">KM-korvaukset</div></div>
+        <div class="ys-item"><div class="ys-num">${yKu.toFixed(0)} €</div><div class="ys-label">Muut kulut</div></div>
+        <div class="ys-item"><div class="ys-num">${S.length}</div><div class="ys-label">Matkaa</div></div>
+      </div>
+      <div class="ys-total"><span class="lbl">Verottomat korvaukset yhteensä</span><span class="val">${(yP+yK+yKu).toFixed(2)} €</span></div>
+    </div>`:'';
+  if(!S.length){document.getElementById('historia-lista').innerHTML='<div class="empty"><div class="ei">🗺️</div><p>Ei matkoja.</p></div>';return;}
+  document.getElementById('historia-lista').innerHTML=S.map(m=>{
+    const ku=(m.kulut||[]).reduce((s,k)=>s+(k.summa||0),0);
+    const yht=(m.paivaraha||0)+(m.km_korvaus||0)+ku;
+    const tila=m.tila||'avoin';
+    const tL={avoin:'Avoin',lahetetty:'Lähetetty',hyvaksytty:'Hyväksytty'}[tila]||tila;
+    const kuitit=(m.kulut||[]).filter(k=>k.kuitti_url).length;
+    return `<div class="matka-item tila-${tila}">
+      <div class="matka-header"><div class="matka-nimi">${m.nimi||'—'}</div><span class="tila-pill tila-${tila}">${tL}</span></div>
+      <div class="matka-meta">📅 ${m.lahto_pvm||''} ${m.lahto_aika||''} → ${m.paluu_pvm||''} ${m.paluu_aika||''}<br>
+        ${m.osoite?'📍 '+m.osoite+'<br>':''}${m.tarkoitus?'💼 '+m.tarkoitus:''}
+        ${kuitit?`<br>🧾 ${kuitit} kuitti${kuitit>1?'a':''}`:''}
+      </div>
+      <div class="matka-footer">
+        <div class="matka-summa">${yht.toFixed(2)} €</div>
+        <div class="matka-actions">
+          <button class="btn btn-sm btn-ghost" onclick="avaaEdit('${m.id}')">✏️</button>
+          <button class="btn btn-sm btn-danger" onclick="poistaMatka('${m.id}')">✕</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function valitseVuosi(v){valittuVuosi=v;paivitaHistoria();}
+
+async function avaaEdit(id){
+  const m=matkat.find(x=>x.id===id);if(!m)return;
+  editMatkaId=id;editKulut=(m.kulut||[]).map(k=>({...k}));
+  ['nimi','osoite','tarkoitus'].forEach(f=>document.getElementById('e-'+f).value=m[f]||'');
+  document.getElementById('e-lahto-pvm').value=m.lahto_pvm||'';
+  document.getElementById('e-lahto-aika').value=m.lahto_aika||'';
+  document.getElementById('e-paluu-pvm').value=m.paluu_pvm||'';
+  document.getElementById('e-paluu-aika').value=m.paluu_aika||'';
+  document.getElementById('e-kulkuneuvo').value=m.kulkuneuvo||'oma-auto';
+  document.getElementById('e-km').value=m.km||0;
+  document.getElementById('e-tila').value=m.tila||'avoin';
+  renderEditKulut();
+  document.getElementById('edit-modal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function suljeModal(){
+  document.getElementById('edit-modal').classList.remove('open');
+  document.body.style.overflow='';editMatkaId=null;editKulut=[];
+}
+function lisaaEditKulu(){
+  editKulut.push({id:'n'+Date.now(),tyyppi:'',kuvaus:'',summa:'',kuitti_url:null,_new:true,file:null,_localUrl:null});
+  renderEditKulut();
+}
+function renderEditKulut(){
+  const el=document.getElementById('edit-kulut-lista');
+  if(!editKulut.length){el.innerHTML='<p style="font-size:.82rem;color:var(--muted)">Ei kulurivejä.</p>';return;}
+  el.innerHTML=editKulut.map((k,i)=>`
+    <div class="kulu-rivi">
+      <button class="kulu-delete" onclick="rmEditKulu(${i})">✕</button>
+      <div class="row2" style="margin-bottom:8px">
+        <div class="field" style="margin:0"><label>Tyyppi</label>
+          <select onchange="setEditKulu(${i},'tyyppi',this.value)">
+            <option value="" ${!k.tyyppi?'selected':''}>Valitse...</option>
+            ${['Majoitus','Ruokailu','Liikenne','Pysäköinti','Edustus','Muu'].map(t=>`<option ${k.tyyppi===t?'selected':''}>${t}</option>`).join('')}
+          </select></div>
+        <div class="field" style="margin:0"><label>Summa (€)</label>
+          <input type="number" value="${k.summa||''}" placeholder="0.00" inputmode="decimal" step="0.01" onchange="setEditKulu(${i},'summa',this.value)"></div>
+      </div>
+      <div class="field" style="margin-bottom:8px"><label>Kuvaus</label>
+        <input type="text" value="${k.kuvaus||''}" placeholder="Lyhyt kuvaus..." onchange="setEditKulu(${i},'kuvaus',this.value)"></div>
+      <label class="receipt-upload" onclick="document.getElementById('ef${i}').click()">
+        <input type="file" id="ef${i}" accept="image/*,application/pdf" onchange="setEditFile(${i},this)">
+        ${k.kuitti_url?`<div class="receipt-fname">✅ Kuitti tallennettu <span style="color:var(--blue);cursor:pointer;margin-left:6px" onclick="event.stopPropagation();showKuitti('${k.kuitti_url}')">Näytä</span></div>`
+          :k._localUrl?`<img class="receipt-thumb" src="${k._localUrl}"><div class="receipt-fname">✅ ${k.file?.name||''}</div>`
+          :`<div class="upload-label">📎 <strong>Lisää kuitti</strong></div>`}
+      </label>
+    </div>`).join('');
+}
+function setEditKulu(i,f,v){if(editKulut[i])editKulut[i][f]=v;}
+function rmEditKulu(i){editKulut.splice(i,1);renderEditKulut();}
+function setEditFile(i,inp){
+  if(!inp.files[0]||!editKulut[i])return;
+  editKulut[i].file=inp.files[0];editKulut[i]._new=true;editKulut[i].kuitti_url=null;
+  editKulut[i]._localUrl=inp.files[0].type.startsWith('image/')?URL.createObjectURL(inp.files[0]):null;
+  renderEditKulut();
+}
+async function showKuitti(path){
+  const {data}=await sb.storage.from('kuitit').createSignedUrl(path,120);
+  if(data?.signedUrl)window.open(data.signedUrl,'_blank');
+}
+
+async function tallennaEdit(){
+  const btn=document.getElementById('edit-save-btn');
+  btn.disabled=true;btn.textContent='Tallennetaan...';
+  const lp=document.getElementById('e-lahto-pvm').value;
+  const la=document.getElementById('e-lahto-aika').value;
+  const pp=document.getElementById('e-paluu-pvm').value;
+  const pa=document.getElementById('e-paluu-aika').value;
+  const km=parseFloat(document.getElementById('e-km').value)||0;
+  const L=new Date(lp+'T'+la),P=new Date(pp+'T'+pa);
+  const v=L.getFullYear(),k=haeKor(v);
+  const h=(P-L)/3600000,paivat=Math.floor(h/24),jatko=paivat>0?h%24:h;
+  let paivaraha=paivat*k.koko;
+  if(jatko>=10)paivaraha+=k.koko;else if(jatko>=6)paivaraha+=k.osa;
+  const kmK=km*k.km;
+  await sb.from('matkat').update({
+    nimi:document.getElementById('e-nimi').value,
+    osoite:document.getElementById('e-osoite').value,
+    lahto_pvm:lp,lahto_aika:la,paluu_pvm:pp,paluu_aika:pa,
+    kulkuneuvo:document.getElementById('e-kulkuneuvo').value,
+    km,tarkoitus:document.getElementById('e-tarkoitus').value,
+    tila:document.getElementById('e-tila').value,
+    kesto_tunnit:h,paivaraha,km_korvaus:kmK,yhteensa:paivaraha+kmK,lahto_vuosi:v,
+    muokattu:new Date().toISOString()
+  }).eq('id',editMatkaId);
+  for(const ek of editKulut){
+    let kuitti_url=ek.kuitti_url;
+    if(ek.file){
+      const p=`${currentUser.id}/${editMatkaId}_${Date.now()}.${ek.file.name.split('.').pop()}`;
+      const {data:sd}=await sb.storage.from('kuitit').upload(p,ek.file,{upsert:true});
+      if(sd)kuitti_url=p;
+    }
+    if(String(ek.id).startsWith('n')){
+      if(!ek.summa)continue;
+      await sb.from('kulut').insert({matka_id:editMatkaId,user_id:currentUser.id,tyyppi:ek.tyyppi,kuvaus:ek.kuvaus,summa:parseFloat(ek.summa)||0,alv:'0',kuitti:!!kuitti_url,kuitti_url});
+    } else {
+      await sb.from('kulut').update({tyyppi:ek.tyyppi,kuvaus:ek.kuvaus,summa:parseFloat(ek.summa)||0,kuitti:!!kuitti_url,kuitti_url}).eq('id',ek.id);
+    }
+  }
+  toast('✅ Tallennettu!');suljeModal();
+  await lataaMatkat();paivitaHistoria();
+  btn.disabled=false;btn.textContent='💾 Tallenna muutokset';
+}
+
+async function poistaMatka(id){
+  if(!confirm('Poistetaanko matka pysyvästi?'))return;
+  await sb.from('matkat').delete().eq('id',id);
+  await lataaMatkat();paivitaHistoria();toast('Matka poistettu');
+}
+
+function vieCSV(){
+  if(!matkat.length){toast('Ei matkoja');return;}
+  const nim=document.getElementById('v-nimi').value||'___';
+  const yri=document.getElementById('v-yritys').value||'___';
+  const hdr=['#','Kohde','Osoite','Lähtö','Paluu','Kesto h','Kulkuneuvo','KM','Päiväraha €','KM-korv €','Kulut €','Yht €','Tila','Kuitteja'];
+  const rvt=matkat.map((m,i)=>{
+    const ku=(m.kulut||[]).reduce((s,k)=>s+(k.summa||0),0);
+    return [i+1,m.nimi||'',m.osoite||'',`${m.lahto_pvm} ${m.lahto_aika||''}`,`${m.paluu_pvm} ${m.paluu_aika||''}`,
+      (m.kesto_tunnit||0).toFixed(1),m.kulkuneuvo||'',m.km||0,
+      (m.paivaraha||0).toFixed(2),(m.km_korvaus||0).toFixed(2),ku.toFixed(2),
+      ((m.paivaraha||0)+(m.km_korvaus||0)+ku).toFixed(2),m.tila||'avoin',
+      (m.kulut||[]).filter(k=>k.kuitti_url).length];
+  });
+  const csv='\uFEFF'+[[`Matkakorvausilmoitus – ${nim} – ${yri}`],[`Tulostettu: ${new Date().toLocaleDateString('fi-FI')}`],[],hdr,...rvt]
+    .map(r=>r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(';')).join('\r\n');
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'}));
+  a.download=`matkat_${new Date().toISOString().slice(0,10)}.csv`;a.click();toast('✅ CSV ladattu!');
+}
+
+async function tulostaRaportti(){
+  if(!matkat.length){toast('Ei matkoja');return;}
+  toast('Valmistellaan...');
+  const nim=document.getElementById('v-nimi').value||'___________';
+  const yri=document.getElementById('v-yritys').value||'___________';
+  const yP=matkat.reduce((s,m)=>s+(m.paivaraha||0),0);
+  const yK=matkat.reduce((s,m)=>s+(m.km_korvaus||0),0);
+  const yKu=matkat.reduce((s,m)=>s+(m.kulut||[]).reduce((ss,k)=>ss+(k.summa||0),0),0);
+  const urls={};
+  for(const m of matkat)for(const k of(m.kulut||[]))if(k.kuitti_url){
+    const {data}=await sb.storage.from('kuitit').createSignedUrl(k.kuitti_url,3600);
+    if(data?.signedUrl)urls[k.id]=data.signedUrl;
+  }
+  const rows=matkat.map((m,i)=>{
+    const ku=(m.kulut||[]).reduce((s,k)=>s+(k.summa||0),0);
+    const kuluR=(m.kulut||[]).map(k=>`<tr style="background:#f7fbff"><td colspan="2" style="padding:4px 8px;font-size:11px;color:#444">&nbsp;&nbsp;↳ ${k.tyyppi||'Kulu'}: ${k.kuvaus||''} — ${(k.summa||0).toFixed(2)} €${urls[k.id]?` <a href="${urls[k.id]}" target="_blank" style="color:#1e6fbf">📎 Kuitti</a>`:''}</td><td></td><td></td><td></td><td></td><td></td></tr>`).join('');
+    return `<tr><td>${i+1}. ${m.nimi||''}</td><td style="font-size:11px">${m.lahto_pvm||''}<br>${m.paluu_pvm||''}</td>
+      <td style="text-align:right">${(m.paivaraha||0).toFixed(2)} €</td>
+      <td style="text-align:right">${(m.km_korvaus||0).toFixed(2)} €</td>
+      <td style="text-align:right">${ku.toFixed(2)} €</td>
+      <td style="text-align:right;font-weight:700">${((m.paivaraha||0)+(m.km_korvaus||0)+ku).toFixed(2)} €</td>
+      <td><span style="font-size:10px;padding:2px 6px;border-radius:10px;background:${{hyvaksytty:'#e8f7f0',lahetetty:'#e0f2fe',avoin:'#fef3c7'}[m.tila||'avoin']}">${{avoin:'Avoin',lahetetty:'Lähetetty',hyvaksytty:'Hyväksytty'}[m.tila||'avoin']}</span></td>
+    </tr>${kuluR}`;
+  }).join('');
+  const w=window.open('','_blank');
+  w.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Matkakorvausilmoitus</title>
+  <style>body{font-family:Arial,sans-serif;max-width:860px;margin:32px auto;font-size:13px}
+  h2{color:#1e6fbf}table{width:100%;border-collapse:collapse;margin-top:14px}
+  th,td{padding:7px;border:1px solid #ddd;text-align:left;vertical-align:top}
+  th{background:#e8f4fd;font-size:11px;text-transform:uppercase;color:#1e6fbf}
+  tfoot td{font-weight:700;background:#d0eaf9}@media print{button{display:none}}</style></head><body>
+  <h2>MATKAKORVAUSILMOITUS</h2>
+  <p><strong>Tekijä:</strong> ${nim} &nbsp;<strong>Yritys:</strong> ${yri} &nbsp;<strong>Päiväys:</strong> ${new Date().toLocaleDateString('fi-FI')}</p>
+  <table><thead><tr><th>Kohde</th><th>Päivät</th><th>Päiväraha</th><th>KM-korv.</th><th>Kulut</th><th>Yhteensä</th><th>Tila</th></tr></thead>
+  <tbody>${rows}</tbody>
+  <tfoot><tr><td colspan="2">YHTEENSÄ</td><td style="text-align:right">${yP.toFixed(2)} €</td><td style="text-align:right">${yK.toFixed(2)} €</td><td style="text-align:right">${yKu.toFixed(2)} €</td><td style="text-align:right">${(yP+yK+yKu).toFixed(2)} €</td><td></td></tr></tfoot></table>
+  <p style="margin-top:20px;font-size:12px">Allekirjoitus: ___________________________ &nbsp; Hyväksyjä: ___________________________</p>
+  <p style="font-size:10px;color:#999;margin-top:8px">Päivärahat Verohallinnon vuosittaisten päätösten mukaan. Kuittilinkit voimassa 1h.</p>
+  <button onclick="window.print()" style="margin-top:14px;padding:10px 22px;background:#1e6fbf;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:14px">🖨 Tulosta / PDF</button>
+  </body></html>`);
+}
+
+function toggleKm(){document.getElementById('km-field').style.display=document.getElementById('m-kulkuneuvo').value==='oma-auto'?'block':'none';}
+function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2600);}
+async function kirjauduUlos(){await sb.auth.signOut();window.location.href='login.html';}
+
+document.getElementById('edit-save-btn').addEventListener('click',tallennaEdit);
+document.getElementById('edit-modal').addEventListener('click',function(e){if(e.target===this)suljeModal();});
+init();
+</script>
+</body>
+</html>
